@@ -64,8 +64,8 @@ function ControlArea({
 		event.preventDefault();
 		startFullscreenMarquee();
 		updateQueryParams({
-			bg: backgroundColor,
-			fg: foregroundColor,
+			bg: backgroundColor.substring(1),
+			fg: foregroundColor.substring(1),
 			text: text,
 		});
 	};
