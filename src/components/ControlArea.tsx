@@ -30,33 +30,27 @@ function ControlArea({
 		return state.app.text;
 	});
 
-	const updateQueryParams = (key: string, value: string): void => {
+	const updateQueryParams = (params: Record<string, string>): void => {
 		const searchParams = new URLSearchParams(window.location.search);
-		if (value) {
-			searchParams.set(key, value);
-		} else {
-			searchParams.delete(key);
+		for (const [key, value] of Object.entries(params)) {
+			if (value) {
+				searchParams.set(key, value);
+			} else {
+				searchParams.delete(key);
+			}
 		}
 		window.history.replaceState(null, "", `?${searchParams.toString()}`);
 	};
 
-	const handleColorChange = (
-		setter: (newValue: string) => UnknownAction,
-		queryKey: string,
-	) => {
+	const handleColorChange = (setter: (newValue: string) => UnknownAction) => {
 		return (color: string): void => {
 			dispatch(setter(color));
-			updateQueryParams(queryKey, color.substring(1));
 		};
 	};
 
-	const handleInputChange = (
-		setter: (newValue: string) => UnknownAction,
-		queryKey: string,
-	) => {
+	const handleInputChange = (setter: (newValue: string) => UnknownAction) => {
 		return (event: React.ChangeEvent<HTMLInputElement>): void => {
 			dispatch(setter(event.target.value));
-			updateQueryParams(queryKey, event.target.value);
 		};
 	};
 
@@ -69,6 +63,11 @@ function ControlArea({
 	const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
 		event.preventDefault();
 		startFullscreenMarquee();
+		updateQueryParams({
+			bg: backgroundColor,
+			fg: foregroundColor,
+			text: text,
+		});
 	};
 
 	return (
@@ -80,7 +79,7 @@ function ControlArea({
 				autoComplete="off"
 				id="text"
 				label={t("text")}
-				onChange={handleInputChange(setText, "text")}
+				onChange={handleInputChange(setText)}
 				size="lg"
 				type="text"
 				value={text}
@@ -89,13 +88,13 @@ function ControlArea({
 				<ColorPicker
 					id="background-color"
 					label={t("backgroundColor")}
-					onChange={handleColorChange(setBackgroundColor, "bg")}
+					onChange={handleColorChange(setBackgroundColor)}
 					value={backgroundColor}
 				/>
 				<ColorPicker
 					id="foreground-color"
 					label={t("foregroundColor")}
-					onChange={handleColorChange(setForegroundColor, "fg")}
+					onChange={handleColorChange(setForegroundColor)}
 					value={foregroundColor}
 				/>
 			</div>
