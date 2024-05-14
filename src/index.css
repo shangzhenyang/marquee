@@ -1,0 +1,63 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+	align-items: center;
+	cursor: default;
+	display: flex;
+	height: 100%;
+	margin: 0;
+	padding: 30px;
+	user-select: none;
+}
+
+html {
+	height: 100%;
+}
+
+input {
+	background-color: white;
+}
+
+main {
+	gap: 30px;
+	justify-content: space-evenly;
+	width: 100%;
+}
+
+.fade-in {
+	animation-name: fade-in;
+	animation-duration: .25s;
+}
+
+.marquee {
+	animation-name: marquee;
+	animation-duration: 5s;
+	animation-iteration-count: infinite;
+	animation-timing-function: linear;
+}
+
+.root {
+	width: 100%;
+}
+
+@keyframes fade-in {
+	0% {
+		opacity: 0;
+	}
+
+	100% {
+		opacity: 1;
+	}
+}
+
+@keyframes marquee {
+	0% {
+		transform: translateX(100vw);
+	}
+
+	100% {
+		transform: translateX(-100%);
+	}
+}
