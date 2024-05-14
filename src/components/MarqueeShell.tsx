@@ -23,7 +23,7 @@ function MarqueeShell({
 		return (
 			<div
 				ref={ref}
-				className={"fixed left-0 top-0 h-screen w-screen cursor-default select-none z-10"}
+				className="fixed left-0 top-0 h-full w-full cursor-default select-none z-10"
 				role="button"
 				style={{
 					backgroundColor: backgroundColor,
@@ -38,7 +38,7 @@ function MarqueeShell({
 	}
 
 	return (
-		<Card ref={ref} className={"h-[175px] w-100 md:h-[400px] md:w-[400px]"}>
+		<Card ref={ref} className="h-[175px] w-100 md:h-[400px] md:w-[400px]">
 			{children}
 		</Card>
 	);
