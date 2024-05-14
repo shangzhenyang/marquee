@@ -32,7 +32,8 @@ function App(): JSX.Element {
 		if (document.exitFullscreen) {
 			void document.exitFullscreen();
 		} else if ("webkitExitFullscreen" in document) {
-			void (document.webkitExitFullscreen as typeof document.exitFullscreen)();
+			void (document.webkitExitFullscreen as
+				typeof document.exitFullscreen)();
 		}
 	};
 

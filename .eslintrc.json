@@ -1,6 +1,11 @@
 {
 	"extends": "rth/react",
 	"rules": {
-		"max-len": "off"
+		"max-len": [
+			"error",
+			{
+				"ignoreStrings": true
+			}
+		]
 	}
 }
