@@ -74,7 +74,7 @@ function App(): JSX.Element {
 
 	return (
 		<>
-			<main className="flex flex-col-reverse md:flex-row p-5">
+			<main className="flex flex-col-reverse md:flex-row justify-evenly gap-7 p-5 w-full">
 				<ControlArea startFullscreenMarquee={startFullscreenMarquee} />
 				<Marquee
 					ref={fullscreenMarqueeRef}

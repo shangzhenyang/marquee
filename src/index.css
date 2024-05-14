@@ -14,16 +14,6 @@ html {
 	height: 100%;
 }
 
-input {
-	background-color: white;
-}
-
-main {
-	gap: 30px;
-	justify-content: space-evenly;
-	width: 100%;
-}
-
 .marquee {
 	/* avoid Safari bug */
 	animation-delay: .1s;
