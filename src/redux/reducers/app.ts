@@ -1,12 +1,30 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+const params = Object.fromEntries(
+	new URLSearchParams(window.location.search).entries(),
+) as Record<string, string | undefined>;
+
+function getNumberOrDefault(
+	value: string | undefined,
+	defaultValue: number,
+): number {
+	if (value === undefined) {
+		return defaultValue;
+	}
+	const number = Number(value);
+	if (isNaN(number)) {
+		return defaultValue;
+	}
+	return number;
+}
+
 const initialState = {
-	backgroundColor: "#000000",
-	fontSize: 120,
-	foregroundColor: "#ffffff",
+	backgroundColor: "#" + (params.bg || "000000"),
+	fontSize: getNumberOrDefault(params.size, 120),
+	foregroundColor: "#" + (params.fg || "ffffff"),
 	isFullscreen: false,
-	speed: 2,
-	text: "Hello, World!",
+	speed: getNumberOrDefault(params.speed, 2),
+	text: params.text || "Hello, World!",
 };
 
 const slice = createSlice({

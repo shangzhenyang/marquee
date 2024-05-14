@@ -30,21 +30,43 @@ function ControlArea({
 		return state.app.text;
 	});
 
-	const handleColorChange = (setter: (newValue: string) => UnknownAction) => {
+	const updateQueryParams = (key: string, value: string): void => {
+		const searchParams = new URLSearchParams(window.location.search);
+		if (value) {
+			searchParams.set(key, value);
+		} else {
+			searchParams.delete(key);
+		}
+		window.history.replaceState(null, "", `?${searchParams.toString()}`);
+	};
+
+	const handleColorChange = (
+		setter: (newValue: string) => UnknownAction,
+		queryKey: string,
+	) => {
 		return (color: string): void => {
 			dispatch(setter(color));
+			updateQueryParams(queryKey, color.substring(1));
 		};
 	};
 
-	const handleInputChange = (setter: (newValue: string) => UnknownAction) => {
+	const handleInputChange = (
+		setter: (newValue: string) => UnknownAction,
+		queryKey: string,
+	) => {
 		return (event: React.ChangeEvent<HTMLInputElement>): void => {
 			dispatch(setter(event.target.value));
+			updateQueryParams(queryKey, event.target.value);
 		};
 	};
 
-	const handleRangeChange = (setter: (newValue: number) => UnknownAction) => {
+	const handleRangeChange = (
+		setter: (newValue: number) => UnknownAction,
+		queryKey: string,
+	) => {
 		return (value: number | number[]): void => {
 			dispatch(setter(Number(value)));
+			updateQueryParams(queryKey, value.toString());
 		};
 	};
 
@@ -62,7 +84,7 @@ function ControlArea({
 				autoComplete="off"
 				id="text"
 				label={t("text")}
-				onChange={handleInputChange(setText)}
+				onChange={handleInputChange(setText, "text")}
 				type="text"
 				value={text}
 			/>
@@ -70,13 +92,13 @@ function ControlArea({
 				<ColorPicker
 					id="background-color"
 					label={t("backgroundColor")}
-					onChange={handleColorChange(setBackgroundColor)}
+					onChange={handleColorChange(setBackgroundColor, "bg")}
 					value={backgroundColor}
 				/>
 				<ColorPicker
 					id="foreground-color"
 					label={t("foregroundColor")}
-					onChange={handleColorChange(setForegroundColor)}
+					onChange={handleColorChange(setForegroundColor, "fg")}
 					value={foregroundColor}
 				/>
 			</div>
@@ -85,7 +107,7 @@ function ControlArea({
 				label={t("speed")}
 				maxValue={10}
 				minValue={0}
-				onChange={handleRangeChange(setSpeed)}
+				onChange={handleRangeChange(setSpeed, "speed")}
 				value={speed}
 			/>
 			<Slider
@@ -93,7 +115,7 @@ function ControlArea({
 				label={t("fontSize")}
 				maxValue={400}
 				minValue={12}
-				onChange={handleRangeChange(setFontSize)}
+				onChange={handleRangeChange(setFontSize, "size")}
 				value={fontSize}
 			/>
 			<Button
