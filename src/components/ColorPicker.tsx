@@ -1,8 +1,15 @@
-import { Button, Chip, Input } from "@nextui-org/react";
+import {
+	Button,
+	Chip,
+	Input,
+	Modal,
+	ModalBody,
+	ModalContent,
+	ModalFooter,
+} from "@nextui-org/react";
 import { t } from "i18next";
 import { useState } from "react";
 import { HexColorPicker } from "react-colorful";
-import ReactModal from "react-modal";
 
 interface ColorPickerProps {
 	id: string;
@@ -54,33 +61,35 @@ function ColorPicker({
 				type="text"
 				value={value}
 			/>
-			<ReactModal
-				className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-white p-5 rounded-lg border border-gray-300 shadow-lg dark:bg-gray-800 dark:border-gray-700"
+			<Modal
+				className="w-fit"
+				hideCloseButton={true}
 				isOpen={isOpen}
-				overlayClassName="backdrop-blur fixed left-0 top-0 w-full h-full z-10 fade-in"
-				onRequestClose={closeColorPicker}
-				shouldCloseOnEsc={true}
-				shouldCloseOnOverlayClick={true}
+				onClose={closeColorPicker}
 			>
-				<HexColorPicker
-					color={value}
-					onChange={handleColorChange}
-				/>
-				<div className="mt-4 flex items-center justify-between">
-					<Chip
-						style={{
-							backgroundColor: value,
-							color: isDark(value) ? "white" : "black",
-						}}
-					>
-						{value}
-					</Chip>
-					<Button onClick={closeColorPicker}>
-						{t("ok")}
-					</Button>
-				</div>
+				<ModalContent>
+					<ModalBody className="items-center pb-0 pt-6">
+						<HexColorPicker
+							color={value}
+							onChange={handleColorChange}
+						/>
+					</ModalBody>
+					<ModalFooter className="flex items-center justify-between">
+						<Chip
+							style={{
+								backgroundColor: value,
+								color: isDark(value) ? "white" : "black",
+							}}
+						>
+							{value}
+						</Chip>
+						<Button onClick={closeColorPicker}>
+							{t("ok")}
+						</Button>
+					</ModalFooter>
+				</ModalContent>
 
-			</ReactModal>
+			</Modal>
 		</>
 	);
 }
