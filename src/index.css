@@ -24,11 +24,6 @@ main {
 	width: 100%;
 }
 
-.fade-in {
-	animation-name: fade-in;
-	animation-duration: .25s;
-}
-
 .marquee {
 	/* avoid Safari bug */
 	animation-delay: .1s;
@@ -41,16 +36,6 @@ main {
 
 .root {
 	width: 100%;
-}
-
-@keyframes fade-in {
-	0% {
-		opacity: 0;
-	}
-
-	100% {
-		opacity: 1;
-	}
 }
 
 @keyframes marquee {
