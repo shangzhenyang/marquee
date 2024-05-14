@@ -14,8 +14,26 @@ function App(): JSX.Element {
 	const startFullscreenMarquee = (): void => {
 		dispatch(setIsFullscreen(true));
 		setTimeout(() => {
-			void fullscreenMarqueeRef.current?.requestFullscreen();
+			const element = fullscreenMarqueeRef.current;
+			if (!element) {
+				return;
+			}
+			if (element.requestFullscreen) {
+				void element.requestFullscreen();
+			} else if ("webkitRequestFullscreen" in element) {
+				void (element.webkitRequestFullscreen as
+					typeof element.requestFullscreen)();
+			}
 		}, 1);
+	};
+
+	const stopFullscreenMarquee = (): void => {
+		dispatch(setIsFullscreen(false));
+		if (document.exitFullscreen) {
+			void document.exitFullscreen();
+		} else if ("webkitExitFullscreen" in document) {
+			void (document.webkitExitFullscreen as typeof document.exitFullscreen)();
+		}
 	};
 
 	useEffect(() => {
@@ -36,10 +54,18 @@ function App(): JSX.Element {
 			"fullscreenchange",
 			handleFullscreenChange,
 		);
+		document.addEventListener(
+			"webkitfullscreenchange",
+			handleFullscreenChange,
+		);
 
 		return (): void => {
 			document.removeEventListener(
 				"fullscreenchange",
+				handleFullscreenChange,
+			);
+			document.removeEventListener(
+				"webkitfullscreenchange",
 				handleFullscreenChange,
 			);
 		};
@@ -47,9 +73,12 @@ function App(): JSX.Element {
 
 	return (
 		<>
-			<main className="flex flex-col md:flex-row-reverse">
-				<Marquee ref={fullscreenMarqueeRef} />
+			<main className="flex flex-col-reverse md:flex-row">
 				<ControlArea startFullscreenMarquee={startFullscreenMarquee} />
+				<Marquee
+					ref={fullscreenMarqueeRef}
+					stopFullscreenMarquee={stopFullscreenMarquee}
+				/>
 			</main>
 			<Footer />
 		</>

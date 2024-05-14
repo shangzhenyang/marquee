@@ -49,7 +49,8 @@ function ColorPicker({
 				id={id}
 				label={label}
 				onClick={handleInputClick}
-				readOnly
+				readOnly={true}
+				size="lg"
 				type="text"
 				value={value}
 			/>

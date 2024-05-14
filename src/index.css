@@ -3,7 +3,6 @@
 @tailwind utilities;
 
 body {
-	align-items: center;
 	cursor: default;
 	display: flex;
 	height: 100%;
@@ -32,10 +31,13 @@ main {
 }
 
 .marquee {
+	/* avoid Safari bug */
+	animation-delay: .1s;
+
 	animation-name: marquee;
-	animation-duration: 5s;
 	animation-iteration-count: infinite;
 	animation-timing-function: linear;
+	transform: translateX(100vw);
 }
 
 .root {
@@ -59,5 +61,11 @@ main {
 
 	100% {
 		transform: translateX(-100%);
+	}
+}
+
+@media (min-width: 768px) {
+	body {
+		align-items: center;
 	}
 }

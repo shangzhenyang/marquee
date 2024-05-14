@@ -4,26 +4,12 @@ const params = Object.fromEntries(
 	new URLSearchParams(window.location.search).entries(),
 ) as Record<string, string | undefined>;
 
-function getNumberOrDefault(
-	value: string | undefined,
-	defaultValue: number,
-): number {
-	if (value === undefined) {
-		return defaultValue;
-	}
-	const number = Number(value);
-	if (isNaN(number)) {
-		return defaultValue;
-	}
-	return number;
-}
-
 const initialState = {
 	backgroundColor: "#" + (params.bg || "000000"),
-	fontSize: getNumberOrDefault(params.size, 120),
+	fontSize: window.innerWidth < 768 ? 96 : 128,
 	foregroundColor: "#" + (params.fg || "ffffff"),
 	isFullscreen: false,
-	speed: getNumberOrDefault(params.speed, 2),
+	speed: 2,
 	text: params.text || "Hello, World!",
 };
 

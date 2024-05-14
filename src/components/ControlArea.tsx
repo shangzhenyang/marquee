@@ -60,13 +60,9 @@ function ControlArea({
 		};
 	};
 
-	const handleRangeChange = (
-		setter: (newValue: number) => UnknownAction,
-		queryKey: string,
-	) => {
+	const handleRangeChange = (setter: (newValue: number) => UnknownAction) => {
 		return (value: number | number[]): void => {
 			dispatch(setter(Number(value)));
-			updateQueryParams(queryKey, value.toString());
 		};
 	};
 
@@ -85,6 +81,7 @@ function ControlArea({
 				id="text"
 				label={t("text")}
 				onChange={handleInputChange(setText, "text")}
+				size="lg"
 				type="text"
 				value={text}
 			/>
@@ -107,7 +104,8 @@ function ControlArea({
 				label={t("speed")}
 				maxValue={10}
 				minValue={0}
-				onChange={handleRangeChange(setSpeed, "speed")}
+				onChange={handleRangeChange(setSpeed)}
+				showTooltip={true}
 				value={speed}
 			/>
 			<Slider
@@ -115,7 +113,8 @@ function ControlArea({
 				label={t("fontSize")}
 				maxValue={400}
 				minValue={12}
-				onChange={handleRangeChange(setFontSize, "size")}
+				onChange={handleRangeChange(setFontSize)}
+				showTooltip={true}
 				value={fontSize}
 			/>
 			<Button
