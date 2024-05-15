@@ -77,6 +77,7 @@ function ColorPicker({
 					</ModalBody>
 					<ModalFooter className="flex items-center justify-between">
 						<Input
+							aria-label={t("colorValue")}
 							onChange={handleInputChange}
 							startContent="#"
 							value={value.substring(1)}

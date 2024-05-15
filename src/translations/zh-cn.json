@@ -1,5 +1,6 @@
 {
 	"backgroundColor": "背景颜色",
+	"colorValue": "色值",
 	"enterTextHere": "在此输入文本",
 	"fontSize": "文本大小",
 	"foregroundColor": "文本颜色",
