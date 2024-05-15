@@ -12,6 +12,9 @@
 	"editor.formatOnSave": true,
 	"editor.formatOnType": true,
 	"editor.insertSpaces": false,
+	"editor.quickSuggestions": {
+		"strings": "on"
+	},
 	"editor.rulers": [ 80 ],
 	"editor.tabSize": 4,
 	"files.eol": "\n",

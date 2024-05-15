@@ -88,7 +88,6 @@ function ColorPicker({
 						</Button>
 					</ModalFooter>
 				</ModalContent>
-
 			</Modal>
 		</>
 	);
