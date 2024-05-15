@@ -1,6 +1,5 @@
 import {
 	Button,
-	Chip,
 	Input,
 	Modal,
 	ModalBody,
@@ -8,7 +7,7 @@ import {
 	ModalFooter,
 } from "@nextui-org/react";
 import { t } from "i18next";
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { HexColorPicker } from "react-colorful";
 
 interface ColorPickerProps {
@@ -38,6 +37,10 @@ function ColorPicker({
 		setIsOpen(true);
 	};
 
+	const handleInputChange = (event: ChangeEvent<HTMLInputElement>): void => {
+		handleColorChange("#" + event.target.value);
+	};
+
 	const isDark = (color: string): boolean => {
 		const [r, g, b] = color
 			.slice(1)
@@ -62,8 +65,6 @@ function ColorPicker({
 				value={value}
 			/>
 			<Modal
-				className="w-fit"
-				hideCloseButton={true}
 				isOpen={isOpen}
 				onClose={closeColorPicker}
 			>
@@ -75,15 +76,18 @@ function ColorPicker({
 						/>
 					</ModalBody>
 					<ModalFooter className="flex items-center justify-between">
-						<Chip
+						<Input
+							onChange={handleInputChange}
+							startContent="#"
+							value={value.substring(1)}
+						/>
+						<Button
+							onClick={closeColorPicker}
 							style={{
 								backgroundColor: value,
 								color: isDark(value) ? "white" : "black",
 							}}
 						>
-							{value}
-						</Chip>
-						<Button onClick={closeColorPicker}>
 							{t("ok")}
 						</Button>
 					</ModalFooter>
