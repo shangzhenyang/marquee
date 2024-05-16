@@ -1,10 +1,10 @@
+import Analytics from "@/components/Analytics";
 import ControlArea from "@/components/ControlArea";
 import Footer from "@/components/Footer";
 import Marquee from "@/components/Marquee";
 import { useAppDispatch } from "@/redux/hooks";
 import { setIsFullscreen } from "@/redux/reducers/app";
 import { useEffect, useRef } from "react";
-import ReactGA from "react-ga4";
 
 function App(): JSX.Element {
 	const dispatch = useAppDispatch();
@@ -36,13 +36,6 @@ function App(): JSX.Element {
 				typeof document.exitFullscreen)();
 		}
 	};
-
-	useEffect(() => {
-		setTimeout(() => {
-			ReactGA.initialize("G-217HTNLT80");
-			ReactGA.send("pageview");
-		}, 1000);
-	}, []);
 
 	useEffect(() => {
 		const handleFullscreenChange = (): void => {
@@ -82,6 +75,7 @@ function App(): JSX.Element {
 				/>
 			</main>
 			<Footer />
+			<Analytics />
 		</>
 	);
 }
