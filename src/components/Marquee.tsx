@@ -7,24 +7,18 @@ interface MarqueeProps {
 	stopFullscreenMarquee: () => void;
 }
 
-function Marquee({
-	stopFullscreenMarquee,
-}: MarqueeProps, ref: ForwardedRef<HTMLDivElement>): JSX.Element {
-	const foregroundColor = useAppSelector((state) => {
-		return state.app.foregroundColor;
-	});
-	const fontSize = useAppSelector((state) => {
-		return state.app.fontSize;
-	});
-	const isFullscreen = useAppSelector((state) => {
-		return state.app.isFullscreen;
-	});
-	const speed = useAppSelector((state) => {
-		return state.app.speed;
-	});
-	const text = useAppSelector((state) => {
-		return state.app.text;
-	});
+function Marquee(
+	{ stopFullscreenMarquee }: MarqueeProps,
+	ref: ForwardedRef<HTMLDivElement>,
+): JSX.Element {
+	const foregroundColor = useAppSelector(
+		(state) => state.app.foregroundColor,
+	);
+	const fontSize = useAppSelector((state) => state.app.fontSize);
+	const isFullscreen = useAppSelector((state) => state.app.isFullscreen);
+	const speed = useAppSelector((state) => state.app.speed);
+	const text = useAppSelector((state) => state.app.text);
+	const theme = useAppSelector((state) => state.app.theme);
 
 	const [duration, setDuration] = useState<number>(0);
 
@@ -39,12 +33,26 @@ function Marquee({
 	}, [isFullscreen, marqueeTextRef, speed, text]);
 
 	return (
-		<MarqueeShell ref={ref} onClick={stopFullscreenMarquee}>
-			<div className="flex items-center justify-center overflow-hidden h-full">
+		<MarqueeShell
+			ref={ref}
+			onClick={stopFullscreenMarquee}
+		>
+			<div
+				className={classNames({
+					"bg-bisexual": theme === "bisexual",
+					"bg-lesbian": theme === "lesbian",
+					"bg-nonbinary": theme === "nonbinary",
+					"bg-rainbow": theme === "rainbow",
+					"bg-transgender": theme === "transgender",
+					"flex items-center justify-center overflow-hidden h-full":
+						true,
+				})}
+			>
 				<div className="w-full">
 					<div
 						ref={marqueeTextRef}
 						className={classNames({
+							"drop-shadow": theme !== "monochrome",
 							"leading-none whitespace-nowrap w-fit": true,
 							"marquee": speed > 0,
 							"text-center w-full": speed === 0,

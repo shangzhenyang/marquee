@@ -21,8 +21,9 @@ function App(): JSX.Element {
 			if (element.requestFullscreen) {
 				void element.requestFullscreen();
 			} else if ("webkitRequestFullscreen" in element) {
-				void (element.webkitRequestFullscreen as
-					typeof element.requestFullscreen)();
+				void (
+					element.webkitRequestFullscreen as typeof element.requestFullscreen
+				)();
 			}
 		}, 1);
 	};
@@ -32,8 +33,9 @@ function App(): JSX.Element {
 		if (document.exitFullscreen) {
 			void document.exitFullscreen();
 		} else if ("webkitExitFullscreen" in document) {
-			void (document.webkitExitFullscreen as
-				typeof document.exitFullscreen)();
+			void (
+				document.webkitExitFullscreen as typeof document.exitFullscreen
+			)();
 		}
 	};
 
@@ -44,10 +46,7 @@ function App(): JSX.Element {
 			}
 		};
 
-		document.addEventListener(
-			"fullscreenchange",
-			handleFullscreenChange,
-		);
+		document.addEventListener("fullscreenchange", handleFullscreenChange);
 		document.addEventListener(
 			"webkitfullscreenchange",
 			handleFullscreenChange,

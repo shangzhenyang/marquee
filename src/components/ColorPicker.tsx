@@ -48,7 +48,7 @@ function ColorPicker({
 			?.map((value) => {
 				return parseInt(value, 16);
 			}) || [0, 0, 0];
-		const brightness = ((r * 299) + (g * 587) + (b * 114)) / 1000;
+		const brightness = (r * 299 + g * 587 + b * 114) / 1000;
 		return brightness < 128;
 	};
 

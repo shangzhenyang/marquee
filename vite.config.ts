@@ -29,7 +29,8 @@ export default defineConfig({
 		react(),
 		VitePWA({
 			manifest: {
-				description: "Create full-screen scrolling text displays with customizable text, colors, font size, and speed. Perfect for concerts, events, announcements, and more.",
+				description:
+					"Create full-screen scrolling text displays with customizable text, colors, font size, and speed. Perfect for concerts, events, announcements, and more.",
 				icons: [
 					{
 						purpose: "any",

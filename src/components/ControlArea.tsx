@@ -1,7 +1,14 @@
 import ColorPicker from "@/components/ColorPicker";
 import { useAppSelector } from "@/redux/hooks";
-import { setBackgroundColor, setFontSize, setForegroundColor, setSpeed, setText } from "@/redux/reducers/app";
-import { Button, Input, Slider } from "@nextui-org/react";
+import {
+	setBackgroundColor,
+	setFontSize,
+	setForegroundColor,
+	setSpeed,
+	setText,
+	setTheme,
+} from "@/redux/reducers/app";
+import { Button, Input, Select, SelectItem, Slider } from "@nextui-org/react";
 import { UnknownAction } from "@reduxjs/toolkit";
 import { t } from "i18next";
 import { useDispatch } from "react-redux";
@@ -14,21 +21,16 @@ function ControlArea({
 	startFullscreenMarquee,
 }: ControlAreaProps): JSX.Element {
 	const dispatch = useDispatch();
-	const backgroundColor = useAppSelector((state) => {
-		return state.app.backgroundColor;
-	});
-	const fontSize = useAppSelector((state) => {
-		return state.app.fontSize;
-	});
-	const foregroundColor = useAppSelector((state) => {
-		return state.app.foregroundColor;
-	});
-	const speed = useAppSelector((state) => {
-		return state.app.speed;
-	});
-	const text = useAppSelector((state) => {
-		return state.app.text;
-	});
+	const backgroundColor = useAppSelector(
+		(state) => state.app.backgroundColor,
+	);
+	const fontSize = useAppSelector((state) => state.app.fontSize);
+	const foregroundColor = useAppSelector(
+		(state) => state.app.foregroundColor,
+	);
+	const speed = useAppSelector((state) => state.app.speed);
+	const text = useAppSelector((state) => state.app.text);
+	const theme = useAppSelector((state) => state.app.theme);
 
 	const updateQueryParams = (params: Record<string, string>): void => {
 		const searchParams = new URLSearchParams(window.location.search);
@@ -60,6 +62,14 @@ function ControlArea({
 		};
 	};
 
+	const handleSelectChange = (
+		setter: (newValue: string) => UnknownAction,
+	) => {
+		return (event: React.ChangeEvent<HTMLSelectElement>): void => {
+			dispatch(setter(event.target.value));
+		};
+	};
+
 	const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
 		event.preventDefault();
 		startFullscreenMarquee();
@@ -67,6 +77,7 @@ function ControlArea({
 			bg: backgroundColor.substring(1),
 			fg: foregroundColor.substring(1),
 			text: text,
+			theme: theme,
 		});
 	};
 
@@ -98,6 +109,19 @@ function ControlArea({
 					value={foregroundColor}
 				/>
 			</div>
+			<Select
+				defaultSelectedKeys={[theme]}
+				label={t("theme")}
+				onChange={handleSelectChange(setTheme)}
+				value={theme}
+			>
+				<SelectItem key="monochrome">{t("monochrome")}</SelectItem>
+				<SelectItem key="rainbow">{t("rainbow")}</SelectItem>
+				<SelectItem key="bisexual">Bisexual Pride</SelectItem>
+				<SelectItem key="lesbian">Lesbian Pride</SelectItem>
+				<SelectItem key="nonbinary">Nonbinary Pride</SelectItem>
+				<SelectItem key="transgender">Transgender Pride</SelectItem>
+			</Select>
 			<Slider
 				id="speed"
 				label={t("speed")}

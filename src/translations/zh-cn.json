@@ -5,9 +5,12 @@
 	"fontSize": "文本大小",
 	"foregroundColor": "文本颜色",
 	"marqueeByShangzhen": "跑马灯 - 杨尚臻",
+	"monochrome": "单色",
 	"ok": "确定",
+	"rainbow": "彩虹",
 	"shangzhenYang": "杨尚臻",
 	"speed": "速度",
 	"start": "开始",
-	"text": "文本"
+	"text": "文本",
+	"theme": "主题"
 }

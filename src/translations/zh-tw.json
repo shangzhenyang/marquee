@@ -5,9 +5,12 @@
 	"fontSize": "文字大小",
 	"foregroundColor": "文字顏色",
 	"marqueeByShangzhen": "跑馬燈 - 楊尚臻",
+	"monochrome": "單色",
 	"ok": "確定",
+	"rainbow": "彩虹",
 	"shangzhenYang": "楊尚臻",
 	"speed": "速度",
 	"start": "開始",
-	"text": "文字"
+	"text": "文字",
+	"theme": "主題"
 }

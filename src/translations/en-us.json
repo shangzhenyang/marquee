@@ -5,9 +5,12 @@
 	"fontSize": "Font Size",
 	"foregroundColor": "Foreground Color",
 	"marqueeByShangzhen": "Marquee by Shangzhen",
+	"monochrome": "Monochrome",
 	"ok": "OK",
+	"rainbow": "Rainbow",
 	"shangzhenYang": "Shangzhen Yang",
 	"speed": "Speed",
 	"start": "Start",
-	"text": "Text"
+	"text": "Text",
+	"theme": "Theme"
 }

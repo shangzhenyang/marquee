@@ -1,6 +1,7 @@
 import { useAppSelector } from "@/redux/hooks";
 import { handleKeyboardClick } from "@/utils";
 import { Card } from "@nextui-org/react";
+import classNames from "classnames";
 import { ForwardedRef, ReactNode, forwardRef } from "react";
 
 interface MarqueeShellProps {
@@ -8,16 +9,15 @@ interface MarqueeShellProps {
 	onClick: () => void;
 }
 
-function MarqueeShell({
-	children,
-	onClick,
-}: MarqueeShellProps, ref: ForwardedRef<HTMLDivElement>): JSX.Element {
-	const backgroundColor = useAppSelector((state) => {
-		return state.app.backgroundColor;
-	});
-	const isFullscreen = useAppSelector((state) => {
-		return state.app.isFullscreen;
-	});
+function MarqueeShell(
+	{ children, onClick }: MarqueeShellProps,
+	ref: ForwardedRef<HTMLDivElement>,
+): JSX.Element {
+	const backgroundColor = useAppSelector(
+		(state) => state.app.backgroundColor,
+	);
+	const isFullscreen = useAppSelector((state) => state.app.isFullscreen);
+	const theme = useAppSelector((state) => state.app.theme);
 
 	if (isFullscreen) {
 		return (
@@ -38,7 +38,15 @@ function MarqueeShell({
 	}
 
 	return (
-		<Card ref={ref} className="h-[175px] w-100 md:h-[400px] md:w-[400px]">
+		<Card
+			ref={ref}
+			className={classNames({
+				"h-[175px] w-100 md:h-[400px] md:w-[400px] dark:border-1 dark:border-neutral-800":
+					true,
+				"text-black": theme === "lesbian" || theme === "transgender",
+				"text-white": theme === "bisexual" || theme === "rainbow",
+			})}
+		>
 			{children}
 		</Card>
 	);
