@@ -1,4 +1,5 @@
 import ColorPicker from "@/components/ColorPicker";
+import ColorPickerModal from "@/components/ColorPickerModal";
 import { useAppSelector } from "@/redux/hooks";
 import {
 	setBackgroundColor,
@@ -11,6 +12,7 @@ import {
 import { Button, Input, Select, SelectItem, Slider } from "@nextui-org/react";
 import { UnknownAction } from "@reduxjs/toolkit";
 import { t } from "i18next";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 
 interface ControlAreaProps {
@@ -66,6 +68,9 @@ function ControlArea({
 		setter: (newValue: string) => UnknownAction,
 	) => {
 		return (event: React.ChangeEvent<HTMLSelectElement>): void => {
+			if (event.target.value === "monochrome") {
+				setIsBackgroundColorOpen(true);
+			}
 			dispatch(setter(event.target.value));
 		};
 	};
@@ -80,6 +85,9 @@ function ControlArea({
 			theme: theme,
 		});
 	};
+
+	const [isBackgroundColorOpen, setIsBackgroundColorOpen] =
+		useState<boolean>(false);
 
 	return (
 		<form
@@ -96,11 +104,31 @@ function ControlArea({
 				value={text}
 			/>
 			<div className="flex gap-4 justify-around">
-				<ColorPicker
+				<Select
 					id="background-color"
+					defaultSelectedKeys={[theme]}
 					label={t("backgroundColor")}
+					onChange={handleSelectChange(setTheme)}
+					value={theme}
+					size="lg"
+				>
+					<SelectItem
+						key="monochrome"
+						textValue={backgroundColor}
+					>
+						{t("monochrome")}
+					</SelectItem>
+					<SelectItem key="rainbow">{t("rainbow")}</SelectItem>
+					<SelectItem key="bisexual">Bisexual Pride</SelectItem>
+					<SelectItem key="lesbian">Lesbian Pride</SelectItem>
+					<SelectItem key="nonbinary">Nonbinary Pride</SelectItem>
+					<SelectItem key="transgender">Transgender Pride</SelectItem>
+				</Select>
+				<ColorPickerModal
 					onChange={handleColorChange(setBackgroundColor)}
 					value={backgroundColor}
+					isOpen={isBackgroundColorOpen}
+					setIsOpen={setIsBackgroundColorOpen}
 				/>
 				<ColorPicker
 					id="foreground-color"
@@ -109,19 +137,6 @@ function ControlArea({
 					value={foregroundColor}
 				/>
 			</div>
-			<Select
-				defaultSelectedKeys={[theme]}
-				label={t("theme")}
-				onChange={handleSelectChange(setTheme)}
-				value={theme}
-			>
-				<SelectItem key="monochrome">{t("monochrome")}</SelectItem>
-				<SelectItem key="rainbow">{t("rainbow")}</SelectItem>
-				<SelectItem key="bisexual">Bisexual Pride</SelectItem>
-				<SelectItem key="lesbian">Lesbian Pride</SelectItem>
-				<SelectItem key="nonbinary">Nonbinary Pride</SelectItem>
-				<SelectItem key="transgender">Transgender Pride</SelectItem>
-			</Select>
 			<Slider
 				id="speed"
 				label={t("speed")}
