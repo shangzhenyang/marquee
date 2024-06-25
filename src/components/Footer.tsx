@@ -2,7 +2,7 @@ import { t } from "i18next";
 
 function Footer(): JSX.Element {
 	return (
-		<footer className="backdrop-blur fixed p-5 left-0 bottom-0">
+		<footer className="px-5 pb-5 md:backdrop-blur md:fixed md:p-5 md:left-0 md:bottom-0">
 			&copy; {new Date().getFullYear()}{" "}
 			<a href="https://www.yangshangzhen.com/">{t("shangzhenYang")}</a>
 			<span className="text-slate-500"> | </span>
