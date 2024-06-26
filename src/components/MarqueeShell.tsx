@@ -17,7 +17,8 @@ function MarqueeShell(
 		(state) => state.app.backgroundColor,
 	);
 	const isFullscreen = useAppSelector((state) => state.app.isFullscreen);
-	const theme = useAppSelector((state) => state.app.theme);
+	const themes = useAppSelector((state) => state.app.themes);
+	const theme = themes[0];
 
 	if (isFullscreen) {
 		return (

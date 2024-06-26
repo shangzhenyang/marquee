@@ -18,7 +18,8 @@ function Marquee(
 	const isFullscreen = useAppSelector((state) => state.app.isFullscreen);
 	const speed = useAppSelector((state) => state.app.speed);
 	const text = useAppSelector((state) => state.app.text);
-	const theme = useAppSelector((state) => state.app.theme);
+	const themes = useAppSelector((state) => state.app.themes);
+	const theme = themes[0];
 
 	const [duration, setDuration] = useState<number>(0);
 

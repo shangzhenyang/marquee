@@ -11,7 +11,7 @@ const initialState = {
 	isFullscreen: false,
 	speed: 2,
 	text: params.text || "Hello, World!",
-	theme: params.theme || "monochrome",
+	themes: [params.theme || "monochrome"],
 };
 
 const slice = createSlice({
@@ -42,9 +42,9 @@ const slice = createSlice({
 			const newValue = action.payload as string;
 			state.text = newValue;
 		},
-		setTheme: (state, action) => {
-			const newValue = action.payload as string;
-			state.theme = newValue;
+		setThemes: (state, action) => {
+			const newValue = action.payload as string[];
+			state.themes = newValue;
 		},
 	},
 });
@@ -56,6 +56,6 @@ export const {
 	setIsFullscreen,
 	setSpeed,
 	setText,
-	setTheme,
+	setThemes,
 } = slice.actions;
 export default slice.reducer;

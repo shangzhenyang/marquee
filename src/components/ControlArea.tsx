@@ -7,7 +7,7 @@ import {
 	setForegroundColor,
 	setSpeed,
 	setText,
-	setTheme,
+	setThemes,
 } from "@/redux/reducers/app";
 import { Button, Input, Select, SelectItem, Slider } from "@nextui-org/react";
 import { UnknownAction } from "@reduxjs/toolkit";
@@ -32,7 +32,7 @@ function ControlArea({
 	);
 	const speed = useAppSelector((state) => state.app.speed);
 	const text = useAppSelector((state) => state.app.text);
-	const theme = useAppSelector((state) => state.app.theme);
+	const themes = useAppSelector((state) => state.app.themes);
 
 	const updateQueryParams = (params: Record<string, string>): void => {
 		const searchParams = new URLSearchParams(window.location.search);
@@ -64,15 +64,19 @@ function ControlArea({
 		};
 	};
 
-	const handleSelectChange = (
-		setter: (newValue: string) => UnknownAction,
-	) => {
-		return (event: React.ChangeEvent<HTMLSelectElement>): void => {
-			if (event.target.value === "monochrome") {
-				setIsBackgroundColorOpen(true);
-			}
-			dispatch(setter(event.target.value));
-		};
+	const handleThemeChange = (
+		event: React.ChangeEvent<HTMLSelectElement>,
+	): void => {
+		if (
+			event.target.value === "monochrome" ||
+			(!event.target.value && themes[0] === "monochrome")
+		) {
+			setIsBackgroundColorOpen(true);
+		}
+		if (!event.target.value) {
+			return;
+		}
+		dispatch(setThemes([event.target.value]));
 	};
 
 	const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
@@ -82,7 +86,7 @@ function ControlArea({
 			bg: backgroundColor.substring(1),
 			fg: foregroundColor.substring(1),
 			text: text,
-			theme: theme,
+			theme: themes[0],
 		});
 	};
 
@@ -106,10 +110,9 @@ function ControlArea({
 			<div className="flex gap-4 justify-around">
 				<Select
 					id="background-color"
-					defaultSelectedKeys={[theme]}
 					label={t("backgroundColor")}
-					onChange={handleSelectChange(setTheme)}
-					value={theme}
+					onChange={handleThemeChange}
+					selectedKeys={themes}
 					size="lg"
 				>
 					<SelectItem
