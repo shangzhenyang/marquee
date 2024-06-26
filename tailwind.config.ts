@@ -13,7 +13,7 @@ export default {
 		extend: {
 			backgroundImage: {
 				bisexual:
-					"linear-gradient(135deg, #D60270 0%, #D60270 25%, #9B4F96 50%, #0038A7 75%, #0038A7 100%)",
+					"linear-gradient(135deg, #D70070 0% 25%, #9C4E97 50%, #0035A9 75% 100%)",
 				lesbian:
 					"linear-gradient(135deg, #D52D00 0%, #D52D00 20%, #FF9A56 20%, #FF9A56 40%, #FFFFFF 40%, #FFFFFF 60%, #D362A4 60%, #D362A4 80%, #A30262 80%, #A30262 100%)",
 				nonbinary:
@@ -21,7 +21,7 @@ export default {
 				rainbow:
 					"linear-gradient(135deg, #FF5F6D 0%, #FFC371 20%, #FFEB3B 40%, #4CAF50 60%, #2196F3 80%, #9C27B0 100%)",
 				transgender:
-					"linear-gradient(135deg, #55CDFC 0%, #55CDFC 20%, #F7A8B8 20%, #F7A8B8 40%, #FFF 40%, #FFF 60%, #F7A8B8 60%, #F7A8B8 80%, #55CDFC 80%, #55CDFC 100%)",
+					"linear-gradient(135deg, #5BCEFA 0% 20%, #F5A9B8 20% 40%, #FFF 40% 60%, #5BCEFA 60% 80%, #F5A9B8 80% 100%)",
 			},
 		},
 	},
