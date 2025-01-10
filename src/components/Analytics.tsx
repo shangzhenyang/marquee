@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { JSX, useEffect } from "react";
 import ReactGA from "react-ga4";
 
 function Analytics(): JSX.Element {

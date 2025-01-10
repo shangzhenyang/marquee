@@ -12,7 +12,7 @@ import {
 import { Button, Input, Select, SelectItem, Slider } from "@nextui-org/react";
 import { UnknownAction } from "@reduxjs/toolkit";
 import { t } from "i18next";
-import { useState } from "react";
+import { JSX, useState } from "react";
 import { useDispatch } from "react-redux";
 
 interface ControlAreaProps {

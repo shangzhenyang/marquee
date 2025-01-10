@@ -2,17 +2,19 @@ import { useAppSelector } from "@/redux/hooks";
 import { handleKeyboardClick } from "@/utils";
 import { Card } from "@nextui-org/react";
 import classNames from "classnames";
-import { ForwardedRef, ReactNode, forwardRef } from "react";
+import { JSX, ReactNode, RefObject } from "react";
 
 interface MarqueeShellProps {
 	children: ReactNode;
 	onClick: () => void;
+	ref: RefObject<HTMLDivElement | null>;
 }
 
-function MarqueeShell(
-	{ children, onClick }: MarqueeShellProps,
-	ref: ForwardedRef<HTMLDivElement>,
-): JSX.Element {
+function MarqueeShell({
+	children,
+	onClick,
+	ref,
+}: MarqueeShellProps): JSX.Element {
 	const backgroundColor = useAppSelector(
 		(state) => state.app.backgroundColor,
 	);
@@ -53,4 +55,4 @@ function MarqueeShell(
 	);
 }
 
-export default forwardRef(MarqueeShell);
+export default MarqueeShell;

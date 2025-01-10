@@ -1,16 +1,14 @@
 import MarqueeShell from "@/components/MarqueeShell";
 import { useAppSelector } from "@/redux/hooks";
 import classNames from "classnames";
-import { ForwardedRef, forwardRef, useEffect, useRef, useState } from "react";
+import { JSX, RefObject, useEffect, useRef, useState } from "react";
 
 interface MarqueeProps {
+	ref: RefObject<HTMLDivElement | null>;
 	stopFullscreenMarquee: () => void;
 }
 
-function Marquee(
-	{ stopFullscreenMarquee }: MarqueeProps,
-	ref: ForwardedRef<HTMLDivElement>,
-): JSX.Element {
+function Marquee({ ref, stopFullscreenMarquee }: MarqueeProps): JSX.Element {
 	const foregroundColor = useAppSelector(
 		(state) => state.app.foregroundColor,
 	);
@@ -72,4 +70,4 @@ function Marquee(
 	);
 }
 
-export default forwardRef(Marquee);
+export default Marquee;

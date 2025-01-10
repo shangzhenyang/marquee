@@ -1,6 +1,6 @@
 import ColorPickerModal from "@/components/ColorPickerModal";
 import { Input } from "@nextui-org/react";
-import { useState } from "react";
+import { JSX, useState } from "react";
 
 interface ColorPickerProps {
 	id: string;

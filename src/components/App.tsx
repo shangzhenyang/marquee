@@ -4,7 +4,7 @@ import Footer from "@/components/Footer";
 import Marquee from "@/components/Marquee";
 import { useAppDispatch } from "@/redux/hooks";
 import { setIsFullscreen } from "@/redux/reducers/app";
-import { useEffect, useRef } from "react";
+import { JSX, useEffect, useRef } from "react";
 
 function App(): JSX.Element {
 	const dispatch = useAppDispatch();

@@ -5,24 +5,6 @@ import { VitePWA } from "vite-plugin-pwa";
 
 export default defineConfig({
 	build: {
-		rollupOptions: {
-			output: {
-				manualChunks: (id) => {
-					if (id.includes("framer-motion")) {
-						return "framer-motion";
-					}
-					if (id.includes("nextui")) {
-						return "nextui";
-					}
-					if (id.includes("node_modules")) {
-						return "vendors";
-					}
-					if (id.includes("translations")) {
-						return "translations";
-					}
-				},
-			},
-		},
 		target: "esnext",
 	},
 	plugins: [
@@ -42,7 +24,7 @@ export default defineConfig({
 				id: "/",
 				name: "Marquee",
 				short_name: "Marquee",
-				theme_color: "#006fee",
+				theme_color: "#000000",
 			},
 			registerType: "autoUpdate",
 		}),

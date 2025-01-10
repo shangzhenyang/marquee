@@ -7,7 +7,7 @@ import {
 	ModalFooter,
 } from "@nextui-org/react";
 import { t } from "i18next";
-import { ChangeEvent } from "react";
+import { ChangeEvent, JSX } from "react";
 import { HexColorPicker } from "react-colorful";
 
 interface ColorPickerModalProps {
@@ -66,7 +66,7 @@ function ColorPickerModal({
 						value={value.substring(1)}
 					/>
 					<Button
-						onClick={closeColorPicker}
+						onPress={closeColorPicker}
 						style={{
 							backgroundColor: value,
 							color: isDark(value) ? "white" : "black",
