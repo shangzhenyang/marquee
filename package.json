@@ -6,6 +6,7 @@
 	"scripts": {
 		"dev": "bunx --bun vite --host",
 		"build": "bunx --bun tsc && bunx --bun vite build",
+		"deploy": "npx -y rth-host-helper@latest --site marquee.shangzhenyang.com --build build --outdir dist",
 		"format": "bunx --bun prettier --write .",
 		"lint": "eslint \"src/**/*.ts\" \"src/**/*.tsx\" && bunx --bun prettier --check .",
 		"preview": "bunx --bun vite preview --host"
