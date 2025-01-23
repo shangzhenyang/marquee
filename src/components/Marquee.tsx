@@ -1,6 +1,6 @@
 import MarqueeShell from "@/components/MarqueeShell";
 import { useAppSelector } from "@/redux/hooks";
-import classNames from "classnames";
+import clsx from "clsx";
 import { JSX, RefObject, useEffect, useRef, useState } from "react";
 
 interface MarqueeProps {
@@ -37,25 +37,24 @@ function Marquee({ ref, stopFullscreenMarquee }: MarqueeProps): JSX.Element {
 			onClick={stopFullscreenMarquee}
 		>
 			<div
-				className={classNames({
-					"bg-bisexual": theme === "bisexual",
-					"bg-lesbian": theme === "lesbian",
-					"bg-nonbinary": theme === "nonbinary",
-					"bg-rainbow": theme === "rainbow",
-					"bg-transgender": theme === "transgender",
-					"flex items-center justify-center overflow-hidden h-full":
-						true,
-				})}
+				className={clsx(
+					theme === "bisexual" && "bg-bisexual",
+					theme === "lesbian" && "bg-lesbian",
+					theme === "nonbinary" && "bg-nonbinary",
+					theme === "rainbow" && "bg-rainbow",
+					theme === "transgender" && "bg-transgender",
+					"flex items-center justify-center overflow-hidden h-full",
+				)}
 			>
 				<div className="w-full">
 					<div
 						ref={marqueeTextRef}
-						className={classNames({
-							"drop-shadow": theme !== "monochrome",
-							"leading-none whitespace-nowrap w-fit": true,
-							"marquee": speed > 0,
-							"text-center w-full": speed === 0,
-						})}
+						className={clsx(
+							"leading-none whitespace-nowrap w-fit",
+							theme !== "monochrome" && "drop-shadow",
+							speed > 0 && "marquee",
+							speed === 0 && "text-center w-full",
+						)}
 						style={{
 							animationDuration: `${duration}s`,
 							color: isFullscreen ? foregroundColor : undefined,

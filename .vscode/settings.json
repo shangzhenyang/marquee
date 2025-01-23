@@ -23,7 +23,7 @@
 	"files.trimTrailingWhitespace": true,
 	"html.format.wrapLineLength": 0,
 	"json.validate.enable": false,
-	"npm.packageManager": "npm",
+	"npm.packageManager": "bun",
 	"typescript.preferences.importModuleSpecifier": "non-relative",
 	"typescript.updateImportsOnFileMove.enabled": "always",
 	"[html]": {

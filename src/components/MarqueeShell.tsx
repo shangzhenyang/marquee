@@ -1,7 +1,7 @@
 import { useAppSelector } from "@/redux/hooks";
 import { handleKeyboardClick } from "@/utils";
 import { Card } from "@nextui-org/react";
-import classNames from "classnames";
+import clsx from "clsx";
 import { JSX, ReactNode, RefObject } from "react";
 
 interface MarqueeShellProps {
@@ -43,12 +43,12 @@ function MarqueeShell({
 	return (
 		<Card
 			ref={ref}
-			className={classNames({
-				"h-[175px] w-100 md:h-[400px] md:w-[400px] dark:border-1 dark:border-neutral-800":
-					true,
-				"text-black": theme === "lesbian" || theme === "transgender",
-				"text-white": theme === "bisexual" || theme === "rainbow",
-			})}
+			className={clsx(
+				"h-[175px] w-100 md:h-[400px] md:w-[400px] dark:border-1 dark:border-neutral-800",
+				(theme === "lesbian" || theme === "transgender") &&
+					"text-black",
+				(theme === "bisexual" || theme === "rainbow") && "text-white",
+			)}
 		>
 			{children}
 		</Card>
