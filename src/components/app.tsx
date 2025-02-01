@@ -1,7 +1,7 @@
-import Analytics from "@/components/Analytics";
-import ControlArea from "@/components/ControlArea";
-import Footer from "@/components/Footer";
-import Marquee from "@/components/Marquee";
+import Analytics from "@/components/analytics";
+import ControlArea from "@/components/control-area";
+import Footer from "@/components/footer";
+import Marquee from "@/components/marquee";
 import { useAppDispatch } from "@/redux/hooks";
 import { setIsFullscreen } from "@/redux/reducers/app";
 import { JSX, useEffect, useRef } from "react";

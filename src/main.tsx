@@ -1,5 +1,5 @@
-import App from "@/components/App";
-import "@/index.css";
+import App from "@/components/app";
+import "@/globals.css";
 import store from "@/redux/store";
 import translationEnUs from "@/translations/en-us.json";
 import translationZhCn from "@/translations/zh-cn.json";

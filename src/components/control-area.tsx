@@ -1,5 +1,5 @@
-import ColorPicker from "@/components/ColorPicker";
-import ColorPickerModal from "@/components/ColorPickerModal";
+import ColorPicker from "@/components/color-picker";
+import ColorPickerModal from "@/components/color-picker-modal";
 import { useAppSelector } from "@/redux/hooks";
 import {
 	setBackgroundColor,

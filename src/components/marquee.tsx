@@ -1,4 +1,4 @@
-import MarqueeShell from "@/components/MarqueeShell";
+import MarqueeShell from "@/components/marquee-shell";
 import { useAppSelector } from "@/redux/hooks";
 import clsx from "clsx";
 import { JSX, RefObject, useEffect, useRef, useState } from "react";
