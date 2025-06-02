@@ -1,14 +1,19 @@
-import { FlatCompat } from "@eslint/eslintrc";
 import js from "@eslint/js";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
+import pluginReact from "eslint-plugin-react";
+import { defineConfig } from "eslint/config";
+import globals from "globals";
+import tseslint from "typescript-eslint";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const compat = new FlatCompat({
-	allConfig: js.configs.all,
-	baseDirectory: __dirname,
-	recommendedConfig: js.configs.recommended,
-});
-
-export default [...compat.extends("rth/react")];
+export default defineConfig([
+	{
+		files: ["**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],
+		plugins: { js },
+		extends: ["js/recommended"],
+	},
+	{
+		files: ["**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],
+		languageOptions: { globals: globals.browser },
+	},
+	tseslint.configs.recommended,
+	pluginReact.configs.flat.recommended,
+]);
