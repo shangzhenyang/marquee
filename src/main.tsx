@@ -4,23 +4,17 @@ import store from "@/redux/store";
 import translationEnUs from "@/translations/en-us.json";
 import translationZhCn from "@/translations/zh-cn.json";
 import translationZhTw from "@/translations/zh-tw.json";
-import { NextUIProvider } from "@nextui-org/react";
+import { HeroUIProvider } from "@heroui/react";
 import i18n, { t } from "i18next";
-import { ThemeProvider as NextThemesProvider } from "next-themes";
+import { ThemeProvider } from "next-themes";
 import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 import { Provider as ReduxProvider } from "react-redux";
 
 const i18nResources = {
-	"en-US": {
-		translation: translationEnUs,
-	},
-	"zh-CN": {
-		translation: translationZhCn,
-	},
-	"zh-TW": {
-		translation: translationZhTw,
-	},
+	"en-US": { translation: translationEnUs },
+	"zh-CN": { translation: translationZhCn },
+	"zh-TW": { translation: translationZhTw },
 };
 
 const lang = ((): string => {
@@ -38,9 +32,7 @@ const lang = ((): string => {
 
 await i18n.init({
 	fallbackLng: "en-US",
-	interpolation: {
-		escapeValue: false,
-	},
+	interpolation: { escapeValue: false },
 	lng: lang,
 	resources: i18nResources,
 });
@@ -51,11 +43,11 @@ document.title = t("marqueeByShangzhen");
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
 	<StrictMode>
 		<ReduxProvider store={store}>
-			<NextUIProvider>
-				<NextThemesProvider attribute="class">
+			<HeroUIProvider>
+				<ThemeProvider attribute="class">
 					<App />
-				</NextThemesProvider>
-			</NextUIProvider>
+				</ThemeProvider>
+			</HeroUIProvider>
 		</ReduxProvider>
 	</StrictMode>,
 );

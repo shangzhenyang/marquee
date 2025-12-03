@@ -6,7 +6,7 @@
 			"outputCapture": "std",
 			"request": "launch",
 			"runtimeArgs": ["run", "dev"],
-			"runtimeExecutable": "bun",
+			"runtimeExecutable": "npm",
 			"type": "node"
 		}
 	],

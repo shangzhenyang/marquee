@@ -1,5 +1,5 @@
 import ColorPickerModal from "@/components/color-picker-modal";
-import { Input } from "@nextui-org/react";
+import { Input } from "@heroui/react";
 import { JSX, useState } from "react";
 
 interface ColorPickerProps {

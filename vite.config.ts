@@ -1,14 +1,14 @@
-import react from "@vitejs/plugin-react";
-import { fileURLToPath } from "node:url";
+import tailwindcss from "@tailwindcss/vite";
+import preactPlugin from "@preact/preset-vite";
+import { fileURLToPath } from "url";
 import { defineConfig } from "vite";
 import { VitePWA } from "vite-plugin-pwa";
 
 export default defineConfig({
-	build: {
-		target: "esnext",
-	},
+	build: { target: "esnext" },
 	plugins: [
-		react(),
+		preactPlugin(),
+		tailwindcss(),
 		VitePWA({
 			manifest: {
 				description:
@@ -30,8 +30,6 @@ export default defineConfig({
 		}),
 	],
 	resolve: {
-		alias: {
-			"@": fileURLToPath(new URL("./src", import.meta.url)),
-		},
+		alias: { "@": fileURLToPath(new URL("./src", import.meta.url)) },
 	},
 });

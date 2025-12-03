@@ -1,2 +1,4 @@
 dist
 **/*.html
+**/*.yaml
+**/*.yml

@@ -1,0 +1,3 @@
+ignoredBuiltDependencies:
+  - '@heroui/shared-utils'
+  - esbuild

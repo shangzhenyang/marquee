@@ -5,7 +5,7 @@ import {
 	ModalBody,
 	ModalContent,
 	ModalFooter,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { t } from "i18next";
 import { ChangeEvent, JSX } from "react";
 import { HexColorPicker } from "react-colorful";

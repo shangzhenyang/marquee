@@ -9,7 +9,7 @@ import {
 	setText,
 	setThemes,
 } from "@/redux/reducers/app";
-import { Button, Input, Select, SelectItem, Slider } from "@nextui-org/react";
+import { Button, Input, Select, SelectItem, Slider } from "@heroui/react";
 import { UnknownAction } from "@reduxjs/toolkit";
 import { t } from "i18next";
 import { JSX, useState } from "react";
@@ -95,7 +95,7 @@ function ControlArea({
 
 	return (
 		<form
-			className="flex flex-col gap-4 justify-center w-100 md:w-80"
+			className="flex flex-col gap-4 justify-center w-full md:w-80"
 			onSubmit={handleSubmit}
 		>
 			<Input

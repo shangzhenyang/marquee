@@ -6,41 +6,39 @@
 	"scripts": {
 		"dev": "vite --host",
 		"build": "tsc && vite build",
-		"deploy": "powershell -c \"$f=New-TemporaryFile; iwr https://host.retiehe.com/cli -OutFile $f; node $f --site marquee.shangzhenyang.com --build build --outdir dist; rm $f -Force\"",
-		"format": "prettier --write .",
+		"deploy": "f=$(mktemp); trap 'rm -f $f' EXIT; curl -fsSL https://host.retiehe.com/cli -o $f && node $f --site marquee.shangzhenyang.com --build build --outdir dist",
 		"lint": "eslint \"src/**/*.ts\" \"src/**/*.tsx\" && prettier --check .",
+		"lint:fix": "eslint \"src/**/*.ts\" \"src/**/*.tsx\" --fix && prettier --write .",
 		"preview": "vite preview --host"
 	},
 	"dependencies": {
-		"@nextui-org/react": "^2.6.11",
+		"@heroui/react": "^2.8.5",
 		"@reduxjs/toolkit": "^2.5.0",
 		"clsx": "^2.1.1",
 		"i18next": "^24.2.1",
 		"motion": "^12.0.3",
 		"next-themes": "^0.4.4",
-		"react": "^19.0.0",
+		"preact": "^10.28.0",
 		"react-colorful": "^5.6.1",
-		"react-dom": "^19.0.0",
 		"react-ga4": "^2.1.0",
 		"react-redux": "^9.2.0",
-		"vite-plugin-pwa": "^0.21.1"
+		"vite-plugin-pwa": "^1.2.0"
 	},
 	"devDependencies": {
 		"@eslint/eslintrc": "^3.2.0",
 		"@eslint/js": "^9.28.0",
+		"@preact/preset-vite": "^2.10.2",
+		"@tailwindcss/vite": "^4.1.17",
 		"@types/node": "^22.10.5",
 		"@types/react": "^19.0.4",
 		"@types/react-dom": "^19.0.2",
-		"@vitejs/plugin-react": "^4.3.4",
-		"autoprefixer": "^10.4.20",
 		"eslint": "^9.28.0",
 		"eslint-plugin-react": "^7.37.5",
 		"globals": "^16.2.0",
-		"postcss": "^8.4.49",
 		"prettier": "^3.4.2",
-		"tailwindcss": "^3.4.17",
+		"tailwindcss": "^4.1.17",
 		"typescript": "^5.7.3",
 		"typescript-eslint": "^8.33.0",
-		"vite": "^6.3.5"
+		"vite": "^7.2.6"
 	}
 }
