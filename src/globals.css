@@ -4,11 +4,60 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-	--background-image-bisexual: linear-gradient(135deg, #D60270 0%, #D60270 25%, #9B4F96 50%, #0038A7 75%, #0038A7 100%);
-	--background-image-lesbian: linear-gradient(135deg, #D52D00 0%, #D52D00 20%, #FF9A56 20%, #FF9A56 40%, #FFFFFF 40%, #FFFFFF 60%, #D362A4 60%, #D362A4 80%, #A30262 80%, #A30262 100%);
-	--background-image-nonbinary: linear-gradient(135deg, #FFF430 0%, #FFF430 25%, #FFFFFF 25%, #FFFFFF 50%, #9C59D1 50%, #9C59D1 75%, #000000 75%, #000000 100%);
-	--background-image-rainbow: linear-gradient(135deg, #FF5F6D 0%, #FFC371 20%, #FFEB3B 40%, #4CAF50 60%, #2196F3 80%, #9C27B0 100%);
-	--background-image-transgender: linear-gradient(135deg, #55CDFC 0%, #55CDFC 20%, #F7A8B8 20%, #F7A8B8 40%, #FFF 40%, #FFF 60%, #F7A8B8 60%, #F7A8B8 80%, #55CDFC 80%, #55CDFC 100%);
+	--background-image-bisexual: linear-gradient(
+		135deg,
+		#d60270 0%,
+		#d60270 25%,
+		#9b4f96 50%,
+		#0038a7 75%,
+		#0038a7 100%
+	);
+	--background-image-lesbian: linear-gradient(
+		135deg,
+		#d52d00 0%,
+		#d52d00 20%,
+		#ff9a56 20%,
+		#ff9a56 40%,
+		#ffffff 40%,
+		#ffffff 60%,
+		#d362a4 60%,
+		#d362a4 80%,
+		#a30262 80%,
+		#a30262 100%
+	);
+	--background-image-nonbinary: linear-gradient(
+		135deg,
+		#fff430 0%,
+		#fff430 25%,
+		#ffffff 25%,
+		#ffffff 50%,
+		#9c59d1 50%,
+		#9c59d1 75%,
+		#000000 75%,
+		#000000 100%
+	);
+	--background-image-rainbow: linear-gradient(
+		135deg,
+		#ff5f6d 0%,
+		#ffc371 20%,
+		#ffeb3b 40%,
+		#4caf50 60%,
+		#2196f3 80%,
+		#9c27b0 100%
+	);
+	--background-image-transgender: linear-gradient(
+		135deg,
+		#55cdfc 0%,
+		#55cdfc 20%,
+		#f7a8b8 20%,
+		#f7a8b8 40%,
+		#fff 40%,
+		#fff 60%,
+		#f7a8b8 60%,
+		#f7a8b8 80%,
+		#55cdfc 80%,
+		#55cdfc 100%
+	);
 }
 
 body {

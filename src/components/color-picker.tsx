@@ -1,6 +1,6 @@
 import ColorPickerModal from "@/components/color-picker-modal";
 import { Input } from "@heroui/react";
-import { JSX, useState } from "react";
+import { JSX, useCallback, useState } from "react";
 
 interface ColorPickerProps {
 	id: string;
@@ -15,11 +15,11 @@ function ColorPicker({
 	onChange,
 	value,
 }: ColorPickerProps): JSX.Element {
-	const [isOpen, setIsOpen] = useState<boolean>(false);
+	const [isOpen, setIsOpen] = useState(false);
 
-	const handleInputClick = (): void => {
+	const handleInputClick = useCallback((): void => {
 		setIsOpen(true);
-	};
+	}, []);
 
 	return (
 		<>
@@ -34,10 +34,10 @@ function ColorPicker({
 				value={value}
 			/>
 			<ColorPickerModal
-				onChange={onChange}
-				value={value}
 				isOpen={isOpen}
+				onChange={onChange}
 				setIsOpen={setIsOpen}
+				value={value}
 			/>
 		</>
 	);

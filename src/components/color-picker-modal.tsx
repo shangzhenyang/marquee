@@ -7,7 +7,7 @@ import {
 	ModalFooter,
 } from "@heroui/react";
 import { t } from "i18next";
-import { ChangeEvent, JSX } from "react";
+import { ChangeEvent, JSX, useCallback } from "react";
 import { HexColorPicker } from "react-colorful";
 
 interface ColorPickerModalProps {
@@ -23,19 +23,25 @@ function ColorPickerModal({
 	isOpen,
 	setIsOpen,
 }: ColorPickerModalProps): JSX.Element {
-	const closeColorPicker = (): void => {
+	const closeColorPicker = useCallback((): void => {
 		setIsOpen(false);
-	};
+	}, [setIsOpen]);
 
-	const handleColorChange = (color: string): void => {
-		onChange(color);
-	};
+	const handleColorChange = useCallback(
+		(color: string): void => {
+			onChange(color);
+		},
+		[onChange],
+	);
 
-	const handleInputChange = (event: ChangeEvent<HTMLInputElement>): void => {
-		handleColorChange("#" + event.target.value);
-	};
+	const handleInputChange = useCallback(
+		(event: ChangeEvent<HTMLInputElement>): void => {
+			handleColorChange(`#${event.target.value}`);
+		},
+		[handleColorChange],
+	);
 
-	const isDark = (color: string): boolean => {
+	const isDark = useCallback((color: string): boolean => {
 		const [r, g, b] = color
 			.slice(1)
 			.match(/.{1,2}/g)
@@ -44,7 +50,7 @@ function ColorPickerModal({
 			}) || [0, 0, 0];
 		const brightness = (r * 299 + g * 587 + b * 114) / 1000;
 		return brightness < 128;
-	};
+	}, []);
 
 	return (
 		<Modal

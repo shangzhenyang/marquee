@@ -1,35 +1,37 @@
 import MarqueeShell from "@/components/marquee-shell";
-import { useAppSelector } from "@/redux/hooks";
+import {
+	fontSize,
+	foregroundColor,
+	isFullscreen,
+	speed,
+	text,
+	themes,
+} from "@/signals";
+import { useSignalEffect } from "@preact/signals";
 import clsx from "clsx";
-import { JSX, RefObject, useEffect, useRef, useState } from "react";
+import { forwardRef, JSX, Ref, useRef, useState } from "react";
 
 interface MarqueeProps {
-	ref: RefObject<HTMLDivElement | null>;
 	stopFullscreenMarquee: () => void;
 }
 
-function Marquee({ ref, stopFullscreenMarquee }: MarqueeProps): JSX.Element {
-	const foregroundColor = useAppSelector(
-		(state) => state.app.foregroundColor,
-	);
-	const fontSize = useAppSelector((state) => state.app.fontSize);
-	const isFullscreen = useAppSelector((state) => state.app.isFullscreen);
-	const speed = useAppSelector((state) => state.app.speed);
-	const text = useAppSelector((state) => state.app.text);
-	const themes = useAppSelector((state) => state.app.themes);
-	const theme = themes[0];
+function Marquee(
+	{ stopFullscreenMarquee }: MarqueeProps,
+	ref: Ref<HTMLDivElement>,
+): JSX.Element {
+	const theme = themes.value[0];
 
 	const [duration, setDuration] = useState<number>(0);
 
 	const marqueeTextRef = useRef<HTMLDivElement>(null);
 
-	useEffect(() => {
+	useSignalEffect(() => {
 		const textWidth = marqueeTextRef.current?.offsetWidth ?? 0;
-		const viewportWidth = isFullscreen ? window.innerWidth : 400;
+		const viewportWidth = isFullscreen.value ? window.innerWidth : 400;
 		const totalDistance = viewportWidth + textWidth;
-		const newDuration = totalDistance / (speed * 100);
+		const newDuration = totalDistance / (speed.value * 100);
 		setDuration(newDuration);
-	}, [isFullscreen, marqueeTextRef, speed, text]);
+	});
 
 	return (
 		<MarqueeShell
@@ -52,16 +54,18 @@ function Marquee({ ref, stopFullscreenMarquee }: MarqueeProps): JSX.Element {
 						className={clsx(
 							"leading-none whitespace-nowrap w-fit",
 							theme !== "monochrome" && "drop-shadow",
-							speed > 0 && "marquee",
-							speed === 0 && "text-center w-full",
+							speed.value > 0 && "marquee",
+							speed.value === 0 && "text-center w-full",
 						)}
 						style={{
 							animationDuration: `${duration}s`,
-							color: isFullscreen ? foregroundColor : undefined,
-							fontSize: `${fontSize}px`,
+							color: isFullscreen.value
+								? foregroundColor.value
+								: undefined,
+							fontSize: `${fontSize.value}px`,
 						}}
 					>
-						{text}
+						{text.value}
 					</div>
 				</div>
 			</div>
@@ -69,4 +73,4 @@ function Marquee({ ref, stopFullscreenMarquee }: MarqueeProps): JSX.Element {
 	);
 }
 
-export default Marquee;
+export default forwardRef(Marquee);

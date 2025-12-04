@@ -2,34 +2,31 @@ import Analytics from "@/components/analytics";
 import ControlArea from "@/components/control-area";
 import Footer from "@/components/footer";
 import Marquee from "@/components/marquee";
-import { useAppDispatch } from "@/redux/hooks";
-import { setIsFullscreen } from "@/redux/reducers/app";
-import { JSX, useEffect, useRef } from "react";
+import { isFullscreen } from "@/signals";
+import { sleep } from "@/utils";
+import { JSX, useCallback, useEffect, useRef } from "react";
 
 function App(): JSX.Element {
-	const dispatch = useAppDispatch();
-
 	const fullscreenMarqueeRef = useRef<HTMLDivElement>(null);
 
-	const startFullscreenMarquee = (): void => {
-		dispatch(setIsFullscreen(true));
-		setTimeout(() => {
-			const element = fullscreenMarqueeRef.current;
-			if (!element) {
-				return;
-			}
-			if (element.requestFullscreen) {
-				void element.requestFullscreen();
-			} else if ("webkitRequestFullscreen" in element) {
-				void (
-					element.webkitRequestFullscreen as typeof element.requestFullscreen
-				)();
-			}
-		}, 1);
-	};
+	const startFullscreenMarquee = useCallback(async (): Promise<void> => {
+		isFullscreen.value = true;
+		await sleep(1);
+		const element = fullscreenMarqueeRef.current;
+		if (!element) {
+			return;
+		}
+		if (element.requestFullscreen) {
+			await element.requestFullscreen();
+		} else if ("webkitRequestFullscreen" in element) {
+			await (
+				element.webkitRequestFullscreen as typeof element.requestFullscreen
+			)();
+		}
+	}, []);
 
-	const stopFullscreenMarquee = (): void => {
-		dispatch(setIsFullscreen(false));
+	const stopFullscreenMarquee = useCallback((): void => {
+		isFullscreen.value = false;
 		if (document.exitFullscreen) {
 			void document.exitFullscreen();
 		} else if ("webkitExitFullscreen" in document) {
@@ -37,12 +34,12 @@ function App(): JSX.Element {
 				document.webkitExitFullscreen as typeof document.exitFullscreen
 			)();
 		}
-	};
+	}, []);
 
 	useEffect(() => {
 		const handleFullscreenChange = (): void => {
 			if (!document.fullscreenElement) {
-				dispatch(setIsFullscreen(false));
+				isFullscreen.value = false;
 			}
 		};
 
@@ -62,7 +59,21 @@ function App(): JSX.Element {
 				handleFullscreenChange,
 			);
 		};
-	}, [dispatch]);
+	}, []);
+
+	useEffect(() => {
+		const handleKeyDown = (event: KeyboardEvent): void => {
+			if (event.key === "Escape" && isFullscreen.value) {
+				stopFullscreenMarquee();
+			}
+		};
+
+		window.addEventListener("keydown", handleKeyDown);
+
+		return (): void => {
+			window.removeEventListener("keydown", handleKeyDown);
+		};
+	}, [stopFullscreenMarquee]);
 
 	return (
 		<>

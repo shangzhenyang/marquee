@@ -1,6 +1,5 @@
 import App from "@/components/app";
 import "@/globals.css";
-import store from "@/redux/store";
 import translationEnUs from "@/translations/en-us.json";
 import translationZhCn from "@/translations/zh-cn.json";
 import translationZhTw from "@/translations/zh-tw.json";
@@ -9,7 +8,6 @@ import i18n, { t } from "i18next";
 import { ThemeProvider } from "next-themes";
 import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
-import { Provider as ReduxProvider } from "react-redux";
 
 const i18nResources = {
 	"en-US": { translation: translationEnUs },
@@ -42,12 +40,10 @@ document.title = t("marqueeByShangzhen");
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
 	<StrictMode>
-		<ReduxProvider store={store}>
-			<HeroUIProvider>
-				<ThemeProvider attribute="class">
-					<App />
-				</ThemeProvider>
-			</HeroUIProvider>
-		</ReduxProvider>
+		<HeroUIProvider>
+			<ThemeProvider attribute="class">
+				<App />
+			</ThemeProvider>
+		</HeroUIProvider>
 	</StrictMode>,
 );

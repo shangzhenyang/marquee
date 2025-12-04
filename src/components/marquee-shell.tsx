@@ -1,34 +1,27 @@
-import { useAppSelector } from "@/redux/hooks";
+import { backgroundColor, isFullscreen, themes } from "@/signals";
 import { handleKeyboardClick } from "@/utils";
 import { Card } from "@heroui/react";
 import clsx from "clsx";
-import { JSX, ReactNode, RefObject } from "react";
+import { forwardRef, JSX, ReactNode, Ref } from "react";
 
 interface MarqueeShellProps {
 	children: ReactNode;
 	onClick: () => void;
-	ref: RefObject<HTMLDivElement | null>;
 }
 
-function MarqueeShell({
-	children,
-	onClick,
-	ref,
-}: MarqueeShellProps): JSX.Element {
-	const backgroundColor = useAppSelector(
-		(state) => state.app.backgroundColor,
-	);
-	const isFullscreen = useAppSelector((state) => state.app.isFullscreen);
-	const themes = useAppSelector((state) => state.app.themes);
-	const theme = themes[0];
+function MarqueeShell(
+	{ children, onClick }: MarqueeShellProps,
+	ref: Ref<HTMLDivElement>,
+): JSX.Element {
+	const theme = themes.value[0];
 
-	if (isFullscreen) {
+	if (isFullscreen.value) {
 		return (
 			<div
 				ref={ref}
 				className="fixed left-0 top-0 h-full w-full cursor-default select-none z-10"
 				role="button"
-				style={{ backgroundColor: backgroundColor }}
+				style={{ backgroundColor: backgroundColor.value }}
 				tabIndex={0}
 				onClick={onClick}
 				onKeyDown={handleKeyboardClick(onClick)}
@@ -53,4 +46,4 @@ function MarqueeShell({
 	);
 }
 
-export default MarqueeShell;
+export default forwardRef(MarqueeShell);

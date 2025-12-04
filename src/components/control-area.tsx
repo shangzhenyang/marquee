@@ -1,97 +1,94 @@
 import ColorPicker from "@/components/color-picker";
 import ColorPickerModal from "@/components/color-picker-modal";
-import { useAppSelector } from "@/redux/hooks";
 import {
-	setBackgroundColor,
-	setFontSize,
-	setForegroundColor,
-	setSpeed,
-	setText,
-	setThemes,
-} from "@/redux/reducers/app";
+	backgroundColor,
+	fontSize,
+	foregroundColor,
+	speed,
+	text,
+	themes,
+} from "@/signals";
 import { Button, Input, Select, SelectItem, Slider } from "@heroui/react";
-import { UnknownAction } from "@reduxjs/toolkit";
+import { Signal } from "@preact/signals";
 import { t } from "i18next";
-import { JSX, useState } from "react";
-import { useDispatch } from "react-redux";
+import { JSX, useCallback, useState } from "react";
 
 interface ControlAreaProps {
-	startFullscreenMarquee: () => void;
+	startFullscreenMarquee: () => Promise<void>;
 }
 
 function ControlArea({
 	startFullscreenMarquee,
 }: ControlAreaProps): JSX.Element {
-	const dispatch = useDispatch();
-	const backgroundColor = useAppSelector(
-		(state) => state.app.backgroundColor,
-	);
-	const fontSize = useAppSelector((state) => state.app.fontSize);
-	const foregroundColor = useAppSelector(
-		(state) => state.app.foregroundColor,
-	);
-	const speed = useAppSelector((state) => state.app.speed);
-	const text = useAppSelector((state) => state.app.text);
-	const themes = useAppSelector((state) => state.app.themes);
+	const [isBackgroundColorOpen, setIsBackgroundColorOpen] = useState(false);
 
-	const updateQueryParams = (params: Record<string, string>): void => {
-		const searchParams = new URLSearchParams(window.location.search);
-		for (const [key, value] of Object.entries(params)) {
-			if (value) {
-				searchParams.set(key, value);
-			} else {
-				searchParams.delete(key);
-			}
-		}
-		window.history.replaceState(null, "", `?${searchParams.toString()}`);
-	};
-
-	const handleColorChange = (setter: (newValue: string) => UnknownAction) => {
-		return (color: string): void => {
-			dispatch(setter(color));
+	const handleColorChange = (signal: Signal<string>) => {
+		return (newValue: string): void => {
+			signal.value = newValue;
 		};
 	};
 
-	const handleInputChange = (setter: (newValue: string) => UnknownAction) => {
+	const handleInputChange = (signal: Signal<string>) => {
 		return (event: React.ChangeEvent<HTMLInputElement>): void => {
-			dispatch(setter(event.target.value));
+			signal.value = event.target.value;
 		};
 	};
 
-	const handleRangeChange = (setter: (newValue: number) => UnknownAction) => {
-		return (value: number | number[]): void => {
-			dispatch(setter(Number(value)));
+	const handleRangeChange = (signal: Signal<number>) => {
+		return (newValue: number | number[]): void => {
+			signal.value =
+				typeof newValue === "number" ? newValue : newValue[0];
 		};
 	};
 
-	const handleThemeChange = (
-		event: React.ChangeEvent<HTMLSelectElement>,
-	): void => {
-		if (
-			event.target.value === "monochrome" ||
-			(!event.target.value && themes[0] === "monochrome")
-		) {
-			setIsBackgroundColorOpen(true);
-		}
-		if (!event.target.value) {
-			return;
-		}
-		dispatch(setThemes([event.target.value]));
-	};
+	const handleThemeChange = useCallback(
+		(event: React.ChangeEvent<HTMLSelectElement>): void => {
+			if (
+				event.target.value === "monochrome" ||
+				(!event.target.value && themes.value[0] === "monochrome")
+			) {
+				setIsBackgroundColorOpen(true);
+			}
+			if (!event.target.value) {
+				return;
+			}
+			themes.value = [event.target.value];
+		},
+		[setIsBackgroundColorOpen],
+	);
 
-	const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
-		event.preventDefault();
-		startFullscreenMarquee();
-		updateQueryParams({
-			bg: backgroundColor.substring(1),
-			fg: foregroundColor.substring(1),
-			text: text,
-			theme: themes[0],
-		});
-	};
+	const updateQueryParams = useCallback(
+		(params: Record<string, string>): void => {
+			const searchParams = new URLSearchParams(window.location.search);
+			for (const [key, value] of Object.entries(params)) {
+				if (value) {
+					searchParams.set(key, value);
+				} else {
+					searchParams.delete(key);
+				}
+			}
+			window.history.replaceState(
+				null,
+				"",
+				`?${searchParams.toString()}`,
+			);
+		},
+		[],
+	);
 
-	const [isBackgroundColorOpen, setIsBackgroundColorOpen] =
-		useState<boolean>(false);
+	const handleSubmit = useCallback(
+		(event: React.FormEvent<HTMLFormElement>): void => {
+			event.preventDefault();
+			void startFullscreenMarquee();
+			updateQueryParams({
+				bg: backgroundColor.value.substring(1),
+				fg: foregroundColor.value.substring(1),
+				text: text.value,
+				theme: themes.value[0],
+			});
+		},
+		[startFullscreenMarquee, updateQueryParams],
+	);
 
 	return (
 		<form
@@ -102,22 +99,22 @@ function ControlArea({
 				autoComplete="off"
 				id="text"
 				label={t("text")}
-				onChange={handleInputChange(setText)}
+				onChange={handleInputChange(text)}
 				size="lg"
 				type="text"
-				value={text}
+				value={text.value}
 			/>
 			<div className="flex gap-4 justify-around">
 				<Select
 					id="background-color"
 					label={t("backgroundColor")}
 					onChange={handleThemeChange}
-					selectedKeys={themes}
+					selectedKeys={themes.value}
 					size="lg"
 				>
 					<SelectItem
 						key="monochrome"
-						textValue={backgroundColor}
+						textValue={backgroundColor.value}
 					>
 						{t("monochrome")}
 					</SelectItem>
@@ -128,16 +125,16 @@ function ControlArea({
 					<SelectItem key="transgender">Transgender Pride</SelectItem>
 				</Select>
 				<ColorPickerModal
-					onChange={handleColorChange(setBackgroundColor)}
-					value={backgroundColor}
 					isOpen={isBackgroundColorOpen}
+					onChange={handleColorChange(backgroundColor)}
 					setIsOpen={setIsBackgroundColorOpen}
+					value={backgroundColor.value}
 				/>
 				<ColorPicker
 					id="foreground-color"
 					label={t("foregroundColor")}
-					onChange={handleColorChange(setForegroundColor)}
-					value={foregroundColor}
+					onChange={handleColorChange(foregroundColor)}
+					value={foregroundColor.value}
 				/>
 			</div>
 			<Slider
@@ -145,18 +142,18 @@ function ControlArea({
 				label={t("speed")}
 				maxValue={10}
 				minValue={0}
-				onChange={handleRangeChange(setSpeed)}
+				onChange={handleRangeChange(speed)}
 				showTooltip={true}
-				value={speed}
+				value={speed.value}
 			/>
 			<Slider
 				id="font-size"
 				label={t("fontSize")}
 				maxValue={400}
 				minValue={12}
-				onChange={handleRangeChange(setFontSize)}
+				onChange={handleRangeChange(fontSize)}
 				showTooltip={true}
-				value={fontSize}
+				value={fontSize.value}
 			/>
 			<Button
 				color="primary"
