@@ -1,6 +1,7 @@
 import ColorPickerModal from "@/components/color-picker-modal";
-import { Input } from "@heroui/react";
-import { JSX, useCallback, useState } from "react";
+import { Input, Label, TextField } from "@heroui/react";
+import type { JSX } from "react";
+import { useCallback, useState } from "react";
 
 interface ColorPickerProps {
 	id: string;
@@ -23,16 +24,19 @@ function ColorPicker({
 
 	return (
 		<>
-			<Input
-				autoComplete="off"
+			<TextField
+				className="min-w-0 flex-1"
 				id={id}
-				label={label}
-				onClick={handleInputClick}
-				readOnly={true}
-				size="lg"
-				type="text"
+				isReadOnly
 				value={value}
-			/>
+			>
+				<Label>{label}</Label>
+				<Input
+					autoComplete="off"
+					className="min-h-11 md:min-h-10"
+					onClick={handleInputClick}
+				/>
+			</TextField>
 			<ColorPickerModal
 				isOpen={isOpen}
 				onChange={onChange}

@@ -1,17 +1,19 @@
 import ColorPicker from "@/components/color-picker";
 import ColorPickerModal from "@/components/color-picker-modal";
+import { useStore } from "@/store";
+import type { Key } from "@heroui/react";
 import {
-	backgroundColor,
-	fontSize,
-	foregroundColor,
-	speed,
-	text,
-	themes,
-} from "@/signals";
-import { Button, Input, Select, SelectItem, Slider } from "@heroui/react";
-import { Signal } from "@preact/signals";
+	Button,
+	Input,
+	Label,
+	ListBox,
+	Select,
+	Slider,
+	TextField,
+} from "@heroui/react";
 import { t } from "i18next";
-import { JSX, useCallback, useState } from "react";
+import type { FormEvent, JSX } from "react";
+import { useCallback, useState } from "react";
 
 interface ControlAreaProps {
 	startFullscreenMarquee: () => Promise<void>;
@@ -20,74 +22,77 @@ interface ControlAreaProps {
 function ControlArea({
 	startFullscreenMarquee,
 }: ControlAreaProps): JSX.Element {
+	const backgroundColor = useStore((state) => state.backgroundColor);
+	const fontSize = useStore((state) => state.fontSize);
+	const foregroundColor = useStore((state) => state.foregroundColor);
+	const speed = useStore((state) => state.speed);
+	const text = useStore((state) => state.text);
+	const theme = useStore((state) => state.theme);
+
 	const [isBackgroundColorOpen, setIsBackgroundColorOpen] = useState(false);
 
-	const handleColorChange = (signal: Signal<string>) => {
-		return (newValue: string): void => {
-			signal.value = newValue;
-		};
-	};
+	const handleBackgroundColorChange = useCallback((newValue: string) => {
+		useStore.setState({
+			backgroundColor: newValue,
+		});
+	}, []);
 
-	const handleInputChange = (signal: Signal<string>) => {
-		return (event: React.ChangeEvent<HTMLInputElement>): void => {
-			signal.value = event.target.value;
-		};
-	};
+	const handleFontSizeChange = useCallback((newValue: number | number[]) => {
+		useStore.setState({
+			fontSize: getSliderValue(newValue),
+		});
+	}, []);
 
-	const handleRangeChange = (signal: Signal<number>) => {
-		return (newValue: number | number[]): void => {
-			signal.value =
-				typeof newValue === "number" ? newValue : newValue[0];
-		};
-	};
+	const handleForegroundColorChange = useCallback((newValue: string) => {
+		useStore.setState({
+			foregroundColor: newValue,
+		});
+	}, []);
 
-	const handleThemeChange = useCallback(
-		(event: React.ChangeEvent<HTMLSelectElement>): void => {
-			if (
-				event.target.value === "monochrome" ||
-				(!event.target.value && themes.value[0] === "monochrome")
-			) {
-				setIsBackgroundColorOpen(true);
-			}
-			if (!event.target.value) {
-				return;
-			}
-			themes.value = [event.target.value];
-		},
-		[setIsBackgroundColorOpen],
-	);
+	const handleMonochromePress = useCallback(() => {
+		setIsBackgroundColorOpen(true);
+	}, []);
 
-	const updateQueryParams = useCallback(
-		(params: Record<string, string>): void => {
-			const searchParams = new URLSearchParams(window.location.search);
-			for (const [key, value] of Object.entries(params)) {
-				if (value) {
-					searchParams.set(key, value);
-				} else {
-					searchParams.delete(key);
-				}
-			}
-			window.history.replaceState(
-				null,
-				"",
-				`?${searchParams.toString()}`,
-			);
-		},
-		[],
-	);
+	const handleSpeedChange = useCallback((newValue: number | number[]) => {
+		useStore.setState({
+			speed: getSliderValue(newValue),
+		});
+	}, []);
 
 	const handleSubmit = useCallback(
-		(event: React.FormEvent<HTMLFormElement>): void => {
+		(event: FormEvent<HTMLFormElement>): void => {
 			event.preventDefault();
 			void startFullscreenMarquee();
 			updateQueryParams({
-				bg: backgroundColor.value.substring(1),
-				fg: foregroundColor.value.substring(1),
-				text: text.value,
-				theme: themes.value[0],
+				bg: backgroundColor.substring(1),
+				fg: foregroundColor.substring(1),
+				text: text,
+				theme: theme,
 			});
 		},
-		[startFullscreenMarquee, updateQueryParams],
+		[backgroundColor, foregroundColor, startFullscreenMarquee, text, theme],
+	);
+
+	const handleTextChange = useCallback((newValue: string) => {
+		useStore.setState({
+			text: newValue,
+		});
+	}, []);
+
+	const handleThemeChange = useCallback((newValue: Key | Key[] | null) => {
+		if (typeof newValue !== "string") {
+			return;
+		}
+		useStore.setState({
+			theme: newValue,
+		});
+	}, []);
+
+	const renderSelectValue = useCallback(
+		({ selectedText }: { selectedText: string }) => {
+			return selectedText;
+		},
+		[],
 	);
 
 	return (
@@ -95,68 +100,120 @@ function ControlArea({
 			className="flex flex-col gap-4 justify-center w-full md:w-80"
 			onSubmit={handleSubmit}
 		>
-			<Input
-				autoComplete="off"
+			<TextField
 				id="text"
-				label={t("text")}
-				onChange={handleInputChange(text)}
-				size="lg"
-				type="text"
-				value={text.value}
-			/>
+				onChange={handleTextChange}
+				value={text}
+			>
+				<Label>{t("text")}</Label>
+				<Input
+					autoComplete="off"
+					className="min-h-11 md:min-h-10"
+				/>
+			</TextField>
 			<div className="flex gap-4 justify-around">
 				<Select
+					className="min-w-0 flex-1"
 					id="background-color"
-					label={t("backgroundColor")}
 					onChange={handleThemeChange}
-					selectedKeys={themes.value}
-					size="lg"
+					value={theme}
 				>
-					<SelectItem
-						key="monochrome"
-						textValue={backgroundColor.value}
-					>
-						{t("monochrome")}
-					</SelectItem>
-					<SelectItem key="rainbow">{t("rainbow")}</SelectItem>
-					<SelectItem key="bisexual">Bisexual Pride</SelectItem>
-					<SelectItem key="lesbian">Lesbian Pride</SelectItem>
-					<SelectItem key="nonbinary">Nonbinary Pride</SelectItem>
-					<SelectItem key="transgender">Transgender Pride</SelectItem>
+					<Label>{t("backgroundColor")}</Label>
+					<Select.Trigger className="min-h-11 md:min-h-10">
+						<Select.Value>{renderSelectValue}</Select.Value>
+						<Select.Indicator />
+					</Select.Trigger>
+					<Select.Popover>
+						<ListBox>
+							<ListBox.Item
+								id="monochrome"
+								onPress={handleMonochromePress}
+								textValue={backgroundColor}
+							>
+								{t("monochrome")}
+								<ListBox.ItemIndicator />
+							</ListBox.Item>
+							<ListBox.Item
+								id="rainbow"
+								textValue={t("rainbow")}
+							>
+								{t("rainbow")}
+								<ListBox.ItemIndicator />
+							</ListBox.Item>
+							<ListBox.Item
+								id="bisexual"
+								textValue="Bisexual Pride"
+							>
+								Bisexual Pride
+								<ListBox.ItemIndicator />
+							</ListBox.Item>
+							<ListBox.Item
+								id="lesbian"
+								textValue="Lesbian Pride"
+							>
+								Lesbian Pride
+								<ListBox.ItemIndicator />
+							</ListBox.Item>
+							<ListBox.Item
+								id="nonbinary"
+								textValue="Nonbinary Pride"
+							>
+								Nonbinary Pride
+								<ListBox.ItemIndicator />
+							</ListBox.Item>
+							<ListBox.Item
+								id="transgender"
+								textValue="Transgender Pride"
+							>
+								Transgender Pride
+								<ListBox.ItemIndicator />
+							</ListBox.Item>
+						</ListBox>
+					</Select.Popover>
 				</Select>
 				<ColorPickerModal
 					isOpen={isBackgroundColorOpen}
-					onChange={handleColorChange(backgroundColor)}
+					onChange={handleBackgroundColorChange}
 					setIsOpen={setIsBackgroundColorOpen}
-					value={backgroundColor.value}
+					value={backgroundColor}
 				/>
 				<ColorPicker
 					id="foreground-color"
 					label={t("foregroundColor")}
-					onChange={handleColorChange(foregroundColor)}
-					value={foregroundColor.value}
+					onChange={handleForegroundColorChange}
+					value={foregroundColor}
 				/>
 			</div>
 			<Slider
 				id="speed"
-				label={t("speed")}
 				maxValue={10}
 				minValue={0}
-				onChange={handleRangeChange(speed)}
-				showTooltip={true}
-				value={speed.value}
-			/>
+				onChange={handleSpeedChange}
+				value={speed}
+			>
+				<Label>{t("speed")}</Label>
+				<Slider.Output />
+				<Slider.Track>
+					<Slider.Fill />
+					<Slider.Thumb />
+				</Slider.Track>
+			</Slider>
 			<Slider
 				id="font-size"
-				label={t("fontSize")}
 				maxValue={400}
 				minValue={12}
-				onChange={handleRangeChange(fontSize)}
-				showTooltip={true}
-				value={fontSize.value}
-			/>
+				onChange={handleFontSizeChange}
+				value={fontSize}
+			>
+				<Label>{t("fontSize")}</Label>
+				<Slider.Output />
+				<Slider.Track>
+					<Slider.Fill />
+					<Slider.Thumb />
+				</Slider.Track>
+			</Slider>
 			<Button
-				color="primary"
+				fullWidth
 				isDisabled={!text}
 				type="submit"
 			>
@@ -164,6 +221,22 @@ function ControlArea({
 			</Button>
 		</form>
 	);
+}
+
+function getSliderValue(newValue: number | number[]): number {
+	return typeof newValue === "number" ? newValue : newValue[0];
+}
+
+function updateQueryParams(params: Record<string, string>): void {
+	const searchParams = new URLSearchParams(window.location.search);
+	for (const [key, value] of Object.entries(params)) {
+		if (value) {
+			searchParams.set(key, value);
+		} else {
+			searchParams.delete(key);
+		}
+	}
+	window.history.replaceState(null, "", `?${searchParams.toString()}`);
 }
 
 export default ControlArea;

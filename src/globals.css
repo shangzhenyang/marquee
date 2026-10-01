@@ -1,7 +1,5 @@
 @import "tailwindcss";
-@plugin "../hero.ts";
-@source "../node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}";
-@custom-variant dark (&:is(.dark *));
+@import "@heroui/styles";
 
 @theme {
 	--background-image-bisexual: linear-gradient(
@@ -61,6 +59,7 @@
 }
 
 body {
+	@apply bg-background text-foreground;
 	cursor: default;
 	display: flex;
 	height: 100%;

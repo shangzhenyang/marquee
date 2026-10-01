@@ -1,13 +1,19 @@
+import babelPlugin from "@rolldown/plugin-babel";
 import tailwindcss from "@tailwindcss/vite";
-import preactPlugin from "@preact/preset-vite";
-import { fileURLToPath } from "url";
+import react, { reactCompilerPreset } from "@vitejs/plugin-react";
+import { fileURLToPath, URL } from "node:url";
 import { defineConfig } from "vite";
 import { VitePWA } from "vite-plugin-pwa";
 
 export default defineConfig({
-	build: { target: "esnext" },
+	build: {
+		target: "esnext",
+	},
 	plugins: [
-		preactPlugin(),
+		react(),
+		babelPlugin({
+			presets: [reactCompilerPreset()],
+		}),
 		tailwindcss(),
 		VitePWA({
 			manifest: {
@@ -30,6 +36,8 @@ export default defineConfig({
 		}),
 	],
 	resolve: {
-		alias: { "@": fileURLToPath(new URL("./src", import.meta.url)) },
+		alias: {
+			"@": fileURLToPath(new URL("./src", import.meta.url)),
+		},
 	},
 });

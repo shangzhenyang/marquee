@@ -2,15 +2,20 @@ import Analytics from "@/components/analytics";
 import ControlArea from "@/components/control-area";
 import Footer from "@/components/footer";
 import Marquee from "@/components/marquee";
-import { isFullscreen } from "@/signals";
+import { useStore } from "@/store";
 import { sleep } from "@/utils";
-import { JSX, useCallback, useEffect, useRef } from "react";
+import { useTheme } from "@heroui/react";
+import type { JSX } from "react";
+import { useCallback, useEffect, useRef } from "react";
 
 function App(): JSX.Element {
+	useTheme();
 	const fullscreenMarqueeRef = useRef<HTMLDivElement>(null);
 
 	const startFullscreenMarquee = useCallback(async (): Promise<void> => {
-		isFullscreen.value = true;
+		useStore.setState({
+			isFullscreen: true,
+		});
 		await sleep(1);
 		const element = fullscreenMarqueeRef.current;
 		if (!element) {
@@ -26,7 +31,9 @@ function App(): JSX.Element {
 	}, []);
 
 	const stopFullscreenMarquee = useCallback((): void => {
-		isFullscreen.value = false;
+		useStore.setState({
+			isFullscreen: false,
+		});
 		if (document.exitFullscreen) {
 			void document.exitFullscreen();
 		} else if ("webkitExitFullscreen" in document) {
@@ -39,7 +46,9 @@ function App(): JSX.Element {
 	useEffect(() => {
 		const handleFullscreenChange = (): void => {
 			if (!document.fullscreenElement) {
-				isFullscreen.value = false;
+				useStore.setState({
+					isFullscreen: false,
+				});
 			}
 		};
 
@@ -63,7 +72,7 @@ function App(): JSX.Element {
 
 	useEffect(() => {
 		const handleKeyDown = (event: KeyboardEvent): void => {
-			if (event.key === "Escape" && isFullscreen.value) {
+			if (event.key === "Escape" && useStore.getState().isFullscreen) {
 				stopFullscreenMarquee();
 			}
 		};

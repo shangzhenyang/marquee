@@ -1,7 +1,9 @@
+import type { KeyboardEvent as ReactKeyboardEvent } from "react";
+
 export function handleKeyboardClick(
 	onClick: () => void,
-): (event: KeyboardEvent | React.KeyboardEvent<Element>) => void {
-	return (event: KeyboardEvent | React.KeyboardEvent<Element>): void => {
+): (event: KeyboardEvent | ReactKeyboardEvent<Element>) => void {
+	return (event: KeyboardEvent | ReactKeyboardEvent<Element>): void => {
 		switch (event.key) {
 			case "Enter":
 			case " ": {
@@ -9,8 +11,9 @@ export function handleKeyboardClick(
 				event.preventDefault();
 				break;
 			}
-			default:
+			default: {
 				break;
+			}
 		}
 	};
 }

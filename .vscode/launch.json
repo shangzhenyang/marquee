@@ -5,8 +5,8 @@
 			"name": "Vite",
 			"outputCapture": "std",
 			"request": "launch",
-			"runtimeArgs": ["run", "dev"],
-			"runtimeExecutable": "npm",
+			"runtimeArgs": ["--run", "dev"],
+			"runtimeExecutable": "node",
 			"type": "node"
 		}
 	],

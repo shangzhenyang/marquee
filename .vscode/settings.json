@@ -11,7 +11,9 @@
 	"editor.formatOnSave": true,
 	"editor.formatOnType": true,
 	"editor.insertSpaces": false,
-	"editor.quickSuggestions": { "strings": "on" },
+	"editor.quickSuggestions": {
+		"strings": "on"
+	},
 	"editor.rulers": [80],
 	"editor.tabSize": 4,
 	"files.eol": "\n",
@@ -23,7 +25,13 @@
 	"npm.packageManager": "pnpm",
 	"typescript.preferences.importModuleSpecifier": "non-relative",
 	"typescript.updateImportsOnFileMove.enabled": "always",
-	"[html]": { "editor.defaultFormatter": "vscode.html-language-features" },
-	"[typescript]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
-	"[typescriptreact]": { "editor.defaultFormatter": "esbenp.prettier-vscode" }
+	"[html]": {
+		"editor.defaultFormatter": "vscode.html-language-features"
+	},
+	"[typescript]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"[typescriptreact]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	}
 }

@@ -1,37 +1,32 @@
 import MarqueeShell from "@/components/marquee-shell";
-import {
-	fontSize,
-	foregroundColor,
-	isFullscreen,
-	speed,
-	text,
-	themes,
-} from "@/signals";
-import { useSignalEffect } from "@preact/signals";
+import { useStore } from "@/store";
 import clsx from "clsx";
-import { forwardRef, JSX, Ref, useRef, useState } from "react";
+import type { JSX, Ref } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 
 interface MarqueeProps {
+	ref: Ref<HTMLDivElement>;
 	stopFullscreenMarquee: () => void;
 }
 
-function Marquee(
-	{ stopFullscreenMarquee }: MarqueeProps,
-	ref: Ref<HTMLDivElement>,
-): JSX.Element {
-	const theme = themes.value[0];
+function Marquee({ ref, stopFullscreenMarquee }: MarqueeProps): JSX.Element {
+	const fontSize = useStore((state) => state.fontSize);
+	const foregroundColor = useStore((state) => state.foregroundColor);
+	const isFullscreen = useStore((state) => state.isFullscreen);
+	const speed = useStore((state) => state.speed);
+	const text = useStore((state) => state.text);
+	const theme = useStore((state) => state.theme);
 
 	const [duration, setDuration] = useState<number>(0);
 
 	const marqueeTextRef = useRef<HTMLDivElement>(null);
 
-	useSignalEffect(() => {
+	useLayoutEffect(() => {
 		const textWidth = marqueeTextRef.current?.offsetWidth ?? 0;
-		const viewportWidth = isFullscreen.value ? window.innerWidth : 400;
+		const viewportWidth = isFullscreen ? window.innerWidth : 400;
 		const totalDistance = viewportWidth + textWidth;
-		const newDuration = totalDistance / (speed.value * 100);
-		setDuration(newDuration);
-	});
+		setDuration(totalDistance / (speed * 100));
+	}, [fontSize, isFullscreen, speed, text]);
 
 	return (
 		<MarqueeShell
@@ -54,18 +49,16 @@ function Marquee(
 						className={clsx(
 							"leading-none whitespace-nowrap w-fit",
 							theme !== "monochrome" && "drop-shadow",
-							speed.value > 0 && "marquee",
-							speed.value === 0 && "text-center w-full",
+							speed > 0 && "marquee",
+							speed === 0 && "text-center w-full",
 						)}
 						style={{
 							animationDuration: `${duration}s`,
-							color: isFullscreen.value
-								? foregroundColor.value
-								: undefined,
-							fontSize: `${fontSize.value}px`,
+							color: isFullscreen ? foregroundColor : undefined,
+							fontSize: `${fontSize}px`,
 						}}
 					>
-						{text.value}
+						{text}
 					</div>
 				</div>
 			</div>
@@ -73,4 +66,4 @@ function Marquee(
 	);
 }
 
-export default forwardRef(Marquee);
+export default Marquee;

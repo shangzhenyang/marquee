@@ -1,5 +1,5 @@
 import { t } from "i18next";
-import { JSX } from "react";
+import type { JSX } from "react";
 
 function Footer(): JSX.Element {
 	return (
